@@ -1,8 +1,9 @@
 {
   "token": "Enter Token here",
   "db": {
-    "host" : "Enter database host address here",
-    "user" : "Enter database user here",
-    "password" : "Enter database here"
+    "host": "Enter database host address here",
+    "user": "Enter database user here",
+    "password": "Enter database password here",
+    "database": "Enter database name here"
   }
 }

@@ -15,11 +15,10 @@ config = JsonCon.load_config("config.json")
 BOT_PREFIX = "!"
 TOKEN = config['token']
 
-extensions = []
+extensions = ["cogs.Settings"]
 
 client = Bot(command_prefix=BOT_PREFIX)
-
-db = MySQLCon(config['db']['host'], config['db']['user'], config['db']['password'])
+client.db = MySQLCon(config['db']['host'], config['db']['user'], config['db']['password'], config['db']['database'])
 
 if __name__ == '__main__':
     for extension in extensions:
@@ -40,7 +39,6 @@ async def on_ready():
 async def on_guild_join(guild):
     print("Bot joined server: " + guild.name + "<" + str(guild.id) + ">")
     db.init_server(guild.id, guild.name)
-
 
 
 @client.event

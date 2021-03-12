@@ -7,10 +7,11 @@ class Scrim(commands.Cog):
 
     @commands.command()
     async def initScrim(self, ctx):
-
+        pass
 
     @commands.command()
     async def checkin(self, ctx):
+        pass
 
 
 
