@@ -7,6 +7,10 @@ def role_mentioned(ctx):
     else:
         message = "No role mentioned"
         print(message)
-        Notification.send_notification(ctx=ctx, header=message)
+        Notification.send_alert(ctx=ctx, header=message, content="")
         return False
+
+
+def is_numeric(message):
+    return message.content.isnumeric()
 

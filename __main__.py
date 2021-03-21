@@ -3,6 +3,7 @@
 from discord import Activity
 from discord.ext import commands
 from discord.ext.commands import Bot
+from discord import Intents
 import sys
 
 from utils.JsonCon import JsonCon
@@ -15,15 +16,20 @@ config = JsonCon.load_config("config.json")
 BOT_PREFIX = "!"
 TOKEN = config['token']
 
-extensions = ["cogs.Settings"]
+extensions = ["cogs.Settings", "cogs.Scrim"]
 
-client = Bot(command_prefix=BOT_PREFIX)
+intents = Intents.default()
+intents.members = True
+
+client = Bot(command_prefix=BOT_PREFIX, intents=intents)
 client.db = MySQLCon(config['db']['host'], config['db']['user'], config['db']['password'], config['db']['database'])
+client.prefix = BOT_PREFIX
 
 if __name__ == '__main__':
     for extension in extensions:
         try:
             client.load_extension(extension)
+            print('{} loaded successfully'.format(extension))
         except Exception as error:
             print('{} cannot be loaded. [{}]'.format(extension, error))
 
@@ -38,7 +44,7 @@ async def on_ready():
 @client.event
 async def on_guild_join(guild):
     print("Bot joined server: " + guild.name + "<" + str(guild.id) + ">")
-    db.init_server(guild.id, guild.name)
+    client.db.init_server(guild.id, guild.name)
 
 
 @client.event
