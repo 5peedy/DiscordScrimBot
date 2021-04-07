@@ -389,7 +389,37 @@ class Scrim(commands.Cog):
 
         self.db.reset_scrim(scrim_id=scrim_id)
 
-        scrim_day = Dates_time.get_tomorrow()
+        num_to_symbol = {
+            1: '1️⃣', 2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣', 6: '6️⃣',
+            7: '7️⃣', 8: '8️⃣', 9: '9️⃣'
+        }
+
+        description = "{} Today\n{} Tomorrow".format(num_to_symbol[1], num_to_symbol[2])
+        embed = discord.Embed(title="Day select", description=description)
+        day_select_msg = await ctx.message.channel.send(embed=embed)
+        for i in range(1, 3):
+            await day_select_msg.add_reaction(num_to_symbol[i])
+
+        def day_select_check(reaction, user):
+            if user != ctx.message.author:
+                return False
+
+            if reaction.emoji != num_to_symbol[1] and reaction.emoji != num_to_symbol[2]:
+                return False
+
+            return True
+        try:
+            reaction, user = await self.client.wait_for('reaction_add', check=day_select_check, timeout=60.0)
+        except asyncio.TimeoutError:
+            await day_select_msg.delete()
+            return
+
+        await day_select_msg.delete()
+
+        if reaction.emoji == num_to_symbol[1]:
+            scrim_day = Dates_time.get_today()
+        elif reaction.emoji == num_to_symbol[2]:
+            scrim_day = Dates_time.get_tomorrow()
 
         checkout_info = discord.Embed(title="Check out for {}".format(scrim_day), color=blue)
         checkout_info.add_field(name="Checkout Team",
