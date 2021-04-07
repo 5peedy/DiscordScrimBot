@@ -8,6 +8,7 @@ import sys
 
 from utils.JsonCon import JsonCon
 from utils.MySQLCon import MySQLCon
+from utils.Checks import Checks
 
 print("Bot is starting...")
 
@@ -24,6 +25,7 @@ intents.members = True
 client = Bot(command_prefix=BOT_PREFIX, intents=intents)
 client.db = MySQLCon(config['db']['host'], config['db']['user'], config['db']['password'], config['db']['database'])
 client.prefix = BOT_PREFIX
+client.checks = Checks(client=client)
 
 if __name__ == '__main__':
     for extension in extensions:
@@ -45,19 +47,6 @@ async def on_ready():
 async def on_guild_join(guild):
     print("Bot joined server: " + guild.name + "<" + str(guild.id) + ">")
     client.db.init_server(guild.id, guild.name)
-
-
-@client.event
-async def on_command_error(ctx, command_error):
-    """ Handles command errors """
-
-    if isinstance(command_error, commands.CheckFailure):
-        # This would allow the identification of the failing check
-        print("ignored command cause not mod or karaoke")
-    elif isinstance(command_error, commands.CommandNotFound):
-        return
-    else:
-        print(command_error)
 
 
 @client.check

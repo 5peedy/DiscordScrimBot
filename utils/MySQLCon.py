@@ -31,7 +31,9 @@ class MySQLCon:
     def is_admin_role(self, server_id, role_id):
         query = "SELECT * FROM admin_roles WHERE server_id= {} AND role_id= {}".format(str(server_id), str(role_id))
         self.cursor.execute(query)
-        if self.cursor.fetchone() is not None:
+        fetched = self.cursor.fetchone()
+        print(fetched)
+        if fetched is not None:
             return True
         else:
             return False
