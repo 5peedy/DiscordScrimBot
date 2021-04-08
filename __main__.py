@@ -9,6 +9,7 @@ import sys
 from utils.JsonCon import JsonCon
 from utils.MySQLCon import MySQLCon
 from utils.Checks import Checks
+from utils import Notification
 
 print("Bot is starting...")
 
@@ -57,6 +58,14 @@ async def globally_block_dms(ctx):
 @client.check
 async def globally_block_bot(ctx):
     return not ctx.author.bot
+
+
+@client.event
+async def on_message(ctx):
+    content = ctx.message.content
+    if content.startswith(";check"):
+        await ctx.message.delete()
+        await Notification.send_alert(ctx=ctx, header="Wrong prefix", content="We changed back to ! as prefix")
 
 
 client.run(TOKEN, bot=True, reconnect=True)
