@@ -205,6 +205,7 @@ class Scrim(commands.Cog):
         pass
 
     @scrim.command(name="init", alias="setup")
+    @commands.has_guild_permissions(administrator=True)
     async def init_scrim(self, ctx):
         await ctx.message.delete()
 
@@ -355,7 +356,9 @@ class Scrim(commands.Cog):
         print("Scrims \"{}\" has been created successfully".format(name))
 
     @scrim.command(name="open")
+    @commands.has_guild_permissions(administrator=True)
     async def open_scrim(self, ctx):
+        await ctx.message.delete()
         selected_scrim = await self.select_scrim(server_id=ctx.guild.id,ctx=ctx)
         scrim_name = selected_scrim['name']
         scrim_id = selected_scrim['id']
@@ -367,7 +370,9 @@ class Scrim(commands.Cog):
         checkout_channel = ctx.guild.get_channel(scrim_channel_ids['checkout'])
 
     @scrim.command(name="close")
+    @commands.has_guild_permissions(administrator=True)
     async def close_scrim(self, ctx):
+        await ctx.message.delete()
         selected_scrim = await self.select_scrim(server_id=ctx.guild.id, ctx=ctx)
         scrim_name = selected_scrim['name']
         scrim_id = selected_scrim['id']
@@ -382,7 +387,9 @@ class Scrim(commands.Cog):
         await checkout_channel.send(content="**CLOSED**")
 
     @scrim.command(name="reset")
+    @commands.has_guild_permissions(administrator=True)
     async def reset_scrim(self, ctx):
+        await ctx.message.delete()
         selected_scrim = await self.select_scrim(server_id=ctx.guild.id, ctx=ctx)
         scrim_id = selected_scrim['id']
         scrim_name = selected_scrim['name']
@@ -448,6 +455,7 @@ class Scrim(commands.Cog):
         await Notification.send_approve(ctx=ctx, header="Scim reset", content="{} has been reset".format(scrim_name))
 
     @scrim.command(name="clear")
+    @commands.has_guild_permissions(administrator=True)
     async def clear(self, ctx, target):
         selected_scrim = await self.select_scrim(server_id=ctx.guild.id, ctx=ctx)
         scrim_id = selected_scrim['id']
@@ -471,6 +479,7 @@ class Scrim(commands.Cog):
                 await loot_channel.send(content=lootspot_text)
 
     @scrim.command(name="announce")
+    @commands.has_guild_permissions(administrator=True)
     async def announce_scrim(self, ctx, scrim_name):
         await ctx.message.delete()
 
@@ -512,7 +521,10 @@ class Scrim(commands.Cog):
         await self.announce_lobby(scrim_id=scrim_id, hosts=hosts, guild=ctx.guild, lobbies=lobbies)
 
     @scrim.command(name="update")
+    @commands.has_guild_permissions(administrator=True)
     async def update_scrim(self, ctx):
+        await ctx.message.delete()
+
         scrim_name = ctx.message.content[14:]
         scrim_id = self.db.get_scrim_id(server_id=ctx.guild.id, scrim_name=scrim_name)
         if scrim_id is None:
@@ -656,6 +668,7 @@ class Scrim(commands.Cog):
         pass
 
     @team.command(name="add")
+    @commands.has_guild_permissions(administrator=True)
     async def team_add(self, ctx):
         await ctx.message.delete()
         channel = ctx.message.channel
