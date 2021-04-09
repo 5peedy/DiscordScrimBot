@@ -642,7 +642,7 @@ class Scrim(commands.Cog):
             role_id = team_tag.id
             description = "{} *checked out by* {}".format(team_tag.mention, ctx.message.author.mention)
         else:
-            if not member_tag == ctx.message.author or not admin:
+            if not member_tag == ctx.message.author and not admin:
                 await Notification.send_alert(ctx=ctx, header="Command denied",
                                               content="You have no permission to check out this MIX")
                 return
