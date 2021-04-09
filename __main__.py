@@ -60,12 +60,11 @@ async def globally_block_bot(ctx):
     return not ctx.author.bot
 
 
-@client.event
-async def on_message(ctx):
-    content = ctx.message.content
+@client.listen("on_message")
+async def on_message(message):
+    content = message.content
     if content.startswith(";check"):
-        await ctx.message.delete()
-        await Notification.send_alert(ctx=ctx, header="Wrong prefix", content="We changed back to ! as prefix")
-
+        await message.delete()
+        await message.channel.send(content="{} wrong prefix. We changed it back from ; to !".format(message.author.mention), delete_after=15)
 
 client.run(TOKEN, bot=True, reconnect=True)
