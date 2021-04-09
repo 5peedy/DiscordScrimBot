@@ -484,7 +484,7 @@ class Scrim(commands.Cog):
     async def announce_scrim(self, ctx):
         await ctx.message.delete()
 
-        selected_scrim = await self.select_scrim(ctx=ctx)
+        selected_scrim = await self.select_scrim(ctx=ctx, server_id=ctx.guild.id)
         scrim_id = selected_scrim['id']
 
         lobbies = self.get_lobbies(reserve=False, scrim_id=scrim_id)
