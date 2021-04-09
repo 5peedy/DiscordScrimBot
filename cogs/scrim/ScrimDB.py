@@ -167,7 +167,7 @@ class ScrimDB:
             query = "SELECT open FROM scrims WHERE server_id = '{}' AND checkin_channel_id = '{}'".format(server_id,
                                                                                                           checkin)
         elif checkout is not None:
-            query = "SELECT open FROM scrims WHERE server_id = '{}' AND checkin_channel_id = '{}'".format(server_id,
+            query = "SELECT open FROM scrims WHERE server_id = '{}' AND checkout_channel_id = '{}'".format(server_id,
                                                                                                           checkout)
         self.cursor.execute(query)
         result = self.cursor.fetchone()[0]
