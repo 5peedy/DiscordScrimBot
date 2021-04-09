@@ -481,18 +481,11 @@ class Scrim(commands.Cog):
 
     @scrim.command(name="announce")
     @commands.has_guild_permissions(administrator=True)
-    async def announce_scrim(self, ctx, scrim_name):
+    async def announce_scrim(self, ctx):
         await ctx.message.delete()
 
-        if scrim_name is None:
-            selected_scrim = await self.select_scrim(ctx=ctx)
-            scrim_id = selected_scrim['id']
-        else:
-            scrim_id = self.db.get_scrim_id(server_id=ctx.guild.id, scrim_name=scrim_name)
-            if scrim_id is None:
-                await Notification.send_alert(ctx=ctx, header="Scrim not found", content="Couldn't find a scrim with "
-                                                                                         "that name")
-                return
+        selected_scrim = await self.select_scrim(ctx=ctx)
+        scrim_id = selected_scrim['id']
 
         lobbies = self.get_lobbies(reserve=False, scrim_id=scrim_id)
         lobby_count = len(lobbies)
