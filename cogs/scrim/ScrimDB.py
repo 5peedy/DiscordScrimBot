@@ -170,7 +170,8 @@ class ScrimDB:
             query = "SELECT open FROM scrims WHERE server_id = '{}' AND checkin_channel_id = '{}'".format(server_id,
                                                                                                           checkout)
         self.cursor.execute(query)
-        result = self.cursor.fetchone()
+        result = self.cursor.fetchone()[0]
+        print(result)
         if result == 1:
             return True
         else:
