@@ -83,9 +83,8 @@ class Scrim(commands.Cog):
         if scrim_name is None:
             scrim_name = self.db.get_scrim_name(scrim_id=scrim_id)
 
-        lobby_status_embed = discord.Embed(title=scrim_name + str(), color=green)
         for lobby in range(1, lobby_count + 1):
-            lobby_status_embed.clear_fields()
+            lobby_status_embed = discord.Embed(title=scrim_name + str(), color=green)
             text = ""
             addition = 0
             if lobby <= unbalanced_team_addition:
@@ -197,7 +196,8 @@ class Scrim(commands.Cog):
 
     @commands.command(name="test")
     async def test(self, ctx):
-        Dates_time.get_today()
+        for role in ctx.message.role_mentions:
+            print(role.mention)
 
     @commands.group(name="scrim", invoke_without_command=True)
     @commands.has_guild_permissions(administrator=True)
@@ -359,7 +359,7 @@ class Scrim(commands.Cog):
     @commands.has_guild_permissions(administrator=True)
     async def open_scrim(self, ctx):
         await ctx.message.delete()
-        selected_scrim = await self.select_scrim(server_id=ctx.guild.id,ctx=ctx)
+        selected_scrim = await self.select_scrim(server_id=ctx.guild.id, ctx=ctx)
         scrim_name = selected_scrim['name']
         scrim_id = selected_scrim['id']
 
@@ -415,6 +415,7 @@ class Scrim(commands.Cog):
                 return False
 
             return True
+
         try:
             reaction, user = await self.client.wait_for('reaction_add', check=day_select_check, timeout=60.0)
         except asyncio.TimeoutError:
@@ -531,7 +532,7 @@ class Scrim(commands.Cog):
             await Notification.send_alert(ctx=ctx, header="Scrim not found", content="Couldn't find a scrim with "
                                                                                      "that name")
             return
-        self.update_lobby(scrim_id=scrim_id)
+        await self.update_lobby(scrim_id=scrim_id)
 
     @commands.command(name="checkin")
     async def checkin(self, ctx):
@@ -545,6 +546,7 @@ class Scrim(commands.Cog):
 
         team_tag = None
         member_tag = None
+        tier = None
         if len(ctx.message.role_mentions) != 0:
             team_tag = ctx.message.role_mentions[0]
         if len(ctx.message.mentions) != 0:
