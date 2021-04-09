@@ -171,7 +171,6 @@ class ScrimDB:
                                                                                                           checkout)
         self.cursor.execute(query)
         result = self.cursor.fetchone()[0]
-        print(result)
         if result == 1:
             return True
         else:
