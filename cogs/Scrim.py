@@ -460,6 +460,8 @@ class Scrim(commands.Cog):
     @scrim.command(name="clear", brief="Use \"!scrim clear lootspot\" for now")
     @commands.has_guild_permissions(administrator=True)
     async def clear(self, ctx, target):
+        await ctx.message.delete()
+
         selected_scrim = await self.select_scrim(server_id=ctx.guild.id, ctx=ctx)
         scrim_id = selected_scrim['id']
         if target == "lootspot":
