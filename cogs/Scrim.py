@@ -498,7 +498,7 @@ class Scrim(commands.Cog):
             elif reaction.emoji == num_to_symbol[2]:
                 scrim_day = Dates_time.get_tomorrow()
 
-            lootspot_text = "LOOTSPOT CHANNEL IS OPEN FOR {}\nTIER 1 IS PROTECTED AND YOU CANT HOTDROP ON TIER1 TEAM\nYOU CAN DROP ON SAME SPOT IF THE OTHER TEAM ISNT TIER 1\You have to write lootspot until 18:50\n\n\nPlease use this template:\n\nTeam&Tier:\nErangel:\nMiramar:\n\n(You can still change your Lootspots after 18:50)\n(You will get a strike for typing you will react drop)\n(You will get a strike for dropping on tier 1 team)\n(You will get a strike for hotdropping another team if your main spot is reachable)\n(You will get a strike for not dropping on your 1st written lootspot if it is in reach) ".format(
+            lootspot_text = "LOOTSPOT CHANNEL IS OPEN FOR {}\nTIER 1 IS PROTECTED AND YOU CANT HOTDROP ON TIER1 TEAM\nYOU CAN DROP ON SAME SPOT IF THE OTHER TEAM ISNT TIER 1\nYou have to write lootspot until 18:50\n\n\nPlease use this template:\n\nTeam&Tier:\nErangel:\nMiramar:\n\n(You can still change your Lootspots after 18:50)\n(You will get a strike for typing you will react drop)\n(You will get a strike for dropping on tier 1 team)\n(You will get a strike for hotdropping another team if your main spot is reachable)\n(You will get a strike for not dropping on your 1st written lootspot if it is in reach) ".format(
                 scrim_day)
 
             lootspot_channels = []
