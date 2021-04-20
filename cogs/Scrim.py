@@ -465,13 +465,41 @@ class Scrim(commands.Cog):
         if target == "lootspot":
             lootspot_channels_ids = self.db.get_lootspot_channel_ids(scrim_id=scrim_id)
 
-            lootspot_text = "LOOTSPOT CHANNEL IS OPEN FOR {}\nTIER 1 IS PROTECTED AND YOU CANT HOTDROP ON " \
-                            "TIER1 TEAM\nYOU CAN DROP ON SAME SPOT IF THE OTHER TEAM ISNT TIER 1\n\nPlease use this " \
-                            "template:\n\nTeam&Tier:\nErangel:\nMiramar:\n\n(You can still change your Lootspots " \
-                            "after 18:50)\n(You will get a strike for typing you will react drop)\n(You will get a " \
-                            "strike for dropping on tier 1 team)\n(You will get a strike for hotdropping another team " \
-                            "if your main spot is reachable)\n(You will get a strike for not dropping on your 1st " \
-                            "written lootspot if it is in reach) ".format(Dates_time.get_tomorrow())
+            num_to_symbol = {
+                1: '1️⃣', 2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣', 6: '6️⃣',
+                7: '7️⃣', 8: '8️⃣', 9: '9️⃣'
+            }
+
+            description = "{} Today\n{} Tomorrow".format(num_to_symbol[1], num_to_symbol[2])
+            embed = discord.Embed(title="Day select", description=description)
+            day_select_msg = await ctx.message.channel.send(embed=embed)
+            for i in range(1, 3):
+                await day_select_msg.add_reaction(num_to_symbol[i])
+
+            def day_select_check(reaction, user):
+                if user != ctx.message.author:
+                    return False
+
+                if reaction.emoji != num_to_symbol[1] and reaction.emoji != num_to_symbol[2]:
+                    return False
+
+                return True
+
+            try:
+                reaction, user = await self.client.wait_for('reaction_add', check=day_select_check, timeout=60.0)
+            except asyncio.TimeoutError:
+                await day_select_msg.delete()
+                return
+
+            await day_select_msg.delete()
+
+            if reaction.emoji == num_to_symbol[1]:
+                scrim_day = Dates_time.get_today()
+            elif reaction.emoji == num_to_symbol[2]:
+                scrim_day = Dates_time.get_tomorrow()
+
+            lootspot_text = "LOOTSPOT CHANNEL IS OPEN FOR {}\nTIER 1 IS PROTECTED AND YOU CANT HOTDROP ON TIER1 TEAM\nYOU CAN DROP ON SAME SPOT IF THE OTHER TEAM ISNT TIER 1\You have to write lootspot until 18:50\n\n\nPlease use this template:\n\nTeam&Tier:\nErangel:\nMiramar:\n\n(You can still change your Lootspots after 18:50)\n(You will get a strike for typing you will react drop)\n(You will get a strike for dropping on tier 1 team)\n(You will get a strike for hotdropping another team if your main spot is reachable)\n(You will get a strike for not dropping on your 1st written lootspot if it is in reach) ".format(
+                scrim_day)
 
             lootspot_channels = []
             for loot_channel_id in lootspot_channels_ids:
