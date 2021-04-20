@@ -199,12 +199,12 @@ class Scrim(commands.Cog):
         for role in ctx.message.role_mentions:
             print(role.mention)
 
-    @commands.group(name="scrim", invoke_without_command=True)
+    @commands.group(name="scrim", alias="scrims", invoke_without_command=True, brief="Commands for scrim handling")
     @commands.has_guild_permissions(administrator=True)
     async def scrim(self, ctx):
         pass
 
-    @scrim.command(name="init", alias="setup")
+    @scrim.command(name="init", alias="setup", brief="Create new scrims")
     @commands.has_guild_permissions(administrator=True)
     async def init_scrim(self, ctx):
         await ctx.message.delete()
@@ -355,7 +355,7 @@ class Scrim(commands.Cog):
                            lootspots=lootspots)
         print("Scrims \"{}\" has been created successfully".format(name))
 
-    @scrim.command(name="open")
+    @scrim.command(name="open", brief="Open scrim", description="Open a scrim\n\nSteps:\n1. Select scrims")
     @commands.has_guild_permissions(administrator=True)
     async def open_scrim(self, ctx):
         await ctx.message.delete()
@@ -369,7 +369,7 @@ class Scrim(commands.Cog):
         checkin_channel = ctx.guild.get_channel(scrim_channel_ids['checkin'])
         checkout_channel = ctx.guild.get_channel(scrim_channel_ids['checkout'])
 
-    @scrim.command(name="close")
+    @scrim.command(name="close", brief="Close scrim", description="Close a scrim\n\nSteps:\n1. Select scrims")
     @commands.has_guild_permissions(administrator=True)
     async def close_scrim(self, ctx):
         await ctx.message.delete()
@@ -386,7 +386,9 @@ class Scrim(commands.Cog):
         await checkin_channel.send(content="**CLOSED**")
         await checkout_channel.send(content="**CLOSED**")
 
-    @scrim.command(name="reset")
+    @scrim.command(name="reset", brief="Reset teams and open next scrim sessions", description="Reset teams and open "
+                                                                    "next scrim sessions\n\nSteps:\n1. Select scrims"
+                                                                    "\n2. Select day")
     @commands.has_guild_permissions(administrator=True)
     async def reset_scrim(self, ctx):
         await ctx.message.delete()
@@ -455,7 +457,7 @@ class Scrim(commands.Cog):
         await self.update_lobby(scrim_id=scrim_id)
         await Notification.send_approve(ctx=ctx, header="Scim reset", content="{} has been reset".format(scrim_name))
 
-    @scrim.command(name="clear")
+    @scrim.command(name="clear", brief="Use \"!scrim clear lootspot\" for now")
     @commands.has_guild_permissions(administrator=True)
     async def clear(self, ctx, target):
         selected_scrim = await self.select_scrim(server_id=ctx.guild.id, ctx=ctx)
@@ -479,7 +481,9 @@ class Scrim(commands.Cog):
                 await loot_channel.purge(limit=100)
                 await loot_channel.send(content=lootspot_text)
 
-    @scrim.command(name="announce")
+    @scrim.command(name="announce", brief="Announce scrim lobbies", description="Announce scrim lobbies\n\nSteps:\n"
+                                                                                "1. Select scrims\n"
+                                                                                "2. Tag scrim hosts")
     @commands.has_guild_permissions(administrator=True)
     async def announce_scrim(self, ctx):
         await ctx.message.delete()
@@ -514,7 +518,7 @@ class Scrim(commands.Cog):
 
         await self.announce_lobby(scrim_id=scrim_id, hosts=hosts, guild=ctx.guild, lobbies=lobbies)
 
-    @scrim.command(name="update")
+    @scrim.command(name="update", brief="For dev only")
     @commands.has_guild_permissions(administrator=True)
     async def update_scrim(self, ctx):
         await ctx.message.delete()
@@ -527,7 +531,7 @@ class Scrim(commands.Cog):
             return
         await self.update_lobby(scrim_id=scrim_id)
 
-    @commands.command(name="checkin")
+    @commands.command(name="checkin", brief="Check in a team or Mix")
     async def checkin(self, ctx):
         await ctx.message.delete()
         admin = self.client.db.is_admin(server_id=ctx.guild.id, member=ctx.message.author)
@@ -601,7 +605,7 @@ class Scrim(commands.Cog):
 
         await self.update_lobby(scrim_id=scrim_id)
 
-    @commands.command(name="checkout")
+    @commands.command(name="checkout", brief="Check out a team or Mix")
     async def checkout(self, ctx):
         await ctx.message.delete()
 
@@ -657,12 +661,12 @@ class Scrim(commands.Cog):
         await Notification.send_approve(ctx=ctx, title="Check out", description=description, permanent=True)
         await self.update_lobby(scrim_id=scrim_id)
 
-    @commands.group(name="team")
+    @commands.group(name="team", brief="Commands for team management")
     @commands.has_guild_permissions(administrator=True)
     async def team(self, ctx):
         pass
 
-    @team.command(name="add")
+    @team.command(name="add", brief="Add a team")
     @commands.has_guild_permissions(administrator=True)
     async def team_add(self, ctx):
         await ctx.message.delete()
