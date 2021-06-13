@@ -500,7 +500,7 @@ class Scrim(commands.Cog):
             elif reaction.emoji == num_to_symbol[2]:
                 scrim_day = Dates_time.get_tomorrow()
 
-            lootspot_text = "**You have to write lootspot until 18:50**\n \n Please use this template if playing under a team:\n Team&Tier:\n Erangel:\n Miramar:\n \n Please use this template if playing as a mix team:\n @Player1 MIX @Player2 @Player3 @Player4:\n Erangel:\n Miramar:\n \n **MAKE SURE TO READ THE LOOTSPOT RULES IN #Rules**".format(
+            lootspot_text = "Lootspots for {}\n**You have to write lootspot until 18:50**\n \n Please use this template if playing under a team:\n Team&Tier:\n Erangel:\n Miramar:\n \n Please use this template if playing as a mix team:\n @Player1 MIX @Player2 @Player3 @Player4:\n Erangel:\n Miramar:\n \n **MAKE SURE TO READ THE LOOTSPOT RULES IN #Rules**".format(
                 scrim_day)
 
             lootspot_channels = []
