@@ -781,6 +781,110 @@ class Scrim(commands.Cog):
         for member in team_members:
             await member.add_roles(tier_role, team_role, reason="Team creation", atomic=False)
 
+    #'@team.command(name="edit", brief="Edit a team")
+    @commands.has_guild_permissions(administrator=True)
+    async def team_edit(self, ctx):
+        channel = ctx.message.channel
+        guild = ctx.guild
+
+        info_embed = discord.Embed(title="Edit team", color=orange)
+        info_msg = await channel.send(embed=info_embed)
+
+        step_embed = discord.Embed(title="Next step", color=blue)
+        step_embed.add_field(name="Select team", value="Please tag the team you want to edit")
+        team_select_msg = await channel.send(embed=step_embed, delete_after=60.0)
+
+        def team_mention_check(message):
+            if len(message.mentions) == 0:
+                return False
+
+            return is_role_team(message.mentions[0])
+
+        try:
+            team_select_res = await self.client.wait_for('message', check=team_mention_check, timeout=60.0)
+        except asyncio.TimeoutError:
+            await team_select_msg.delete()
+            await info_msg.delete()
+
+        team_role = team_select_res.mentions[0]
+
+        select = ["Team name", "Tier", "Captain"]
+        description = "Select category you want to edit\n"
+        for i in range(0, len(select)):
+            description += "\n" + num_to_symbol[i + 1] + " " + select[i]
+        step_embed.clear_fields()
+        step_embed.add_field(name="Select category", value=description)
+
+        select_msg = await channel.send(embed=step_embed)
+        for i in range(0, len(select)):
+            await select_msg.add_reaction(num_to_symbol[i])
+
+        def select_check(reaction, user):
+            if user != ctx.message.author:
+                return False
+
+            for j in range(0, len(select)):
+                if reaction.emoji == num_to_symbol[j]:
+                    return True
+            return False
+
+        try:
+            reaction, user = await self.client.wait_for('reaction_add', check=select_check, timeout=60.0)
+        except asyncio.TimeoutError:
+            await select_msg.delete()
+            return
+
+        selected = select[DictUtil.get_key_by_value(reaction, num_to_symbol) - 1]
+        if selected == selected[0]:
+            pass  # ToDo make functions for selected category
+
+    #@commands.group(name="player", brief="Commands for player tame management")
+    @commands.has_guild_permissions(administrator=True)
+    async def player(self, ctx):
+        pass
+
+    #@player.command(name="add", brief="Add a player to an existing team", invoke_without_command=True)
+    @commands.has_guild_permissions(administrator=True)
+    async def player_add(self, ctx):
+        pass
+
+    @commands.group(name="utils", brief="Useful scripts", invoke_without_command=True)
+    @commands.has_guild_permissions(administrator=True)
+    async def utils(self, ctx):
+        pass
+
+    @commands.command(name="updateTeamRole")
+    @commands.has_guild_permissions(administrator=True)
+    async def update_team_role(self, ctx):
+        team_role_id = 580622910377558026
+        team_role = discord.utils.get(ctx.guild, id=team_role_id)
+
+        change_count = 0;
+
+        def member_in_team(member):
+            for role in member.roles:
+                if is_role_team(role):
+                    return True
+            return False
+
+        def has_team_role(member):
+            for role in member.roles:
+                if role.id == team_role_id:
+                    return True
+            return False
+
+        for member in ctx.guild.members:
+            if member_in_team(member):
+                if not has_team_role(member):
+                    await member.add_roles(team_role, reason="Update team roles", atomic=False)
+                    change_count += 1
+            else:
+                if has_team_role(member):
+                    await member.remove_roles(team_role, reason="Update team roles", atomic=False)
+                    change_count += 1
+
+        print("Role changes: {}".format(change_count))
+
 
 def setup(client):
     client.add_cog(Scrim(client))
