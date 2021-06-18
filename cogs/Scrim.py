@@ -850,7 +850,7 @@ class Scrim(commands.Cog):
     async def utils(self, ctx):
         pass
 
-    @commands.command(name="updateTeamRole")
+    @utils.command(name="updateTeamRole")
     @commands.has_guild_permissions(administrator=True)
     async def update_team_role(self, ctx):
         team_role_id = 580622910377558026
