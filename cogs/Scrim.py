@@ -856,7 +856,7 @@ class Scrim(commands.Cog):
         team_role_id = 580622910377558026
         team_role = discord.utils.get(ctx.guild.roles, id=team_role_id)
 
-        change_count = 0;
+        change_count = 0
 
         def member_in_team(member):
             for role in member.roles:
