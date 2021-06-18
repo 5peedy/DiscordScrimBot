@@ -4,12 +4,17 @@ import discord
 
 from cogs.scrim.ScrimDB import ScrimDB
 
-from utils import Checks, Notification, Dates_time
+from utils import Checks, Notification, Dates_time, DictUtil
 
 green = 0x11f711
 red = 0xD10000
 orange = 0xff8800
 blue = 0x007BFD
+
+num_to_symbol = {
+    1: '1️⃣', 2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣', 6: '6️⃣',
+    7: '7️⃣', 8: '8️⃣', 9: '9️⃣'
+}
 
 
 def sort_teams(teams, mode):
@@ -117,10 +122,7 @@ class Scrim(commands.Cog):
 
     async def select_scrim(self, server_id, ctx):
         scrims = self.db.get_scrims(server_id)
-        num_to_symbol = {
-            1: '1️⃣', 2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣', 6: '6️⃣',
-            7: '7️⃣', 8: '8️⃣', 9: '9️⃣'
-        }
+
         description = ""
         for i in range(1, len(scrims) + 1):
             description += "{} {}\n".format(num_to_symbol[i], scrims[i - 1]['name'])
@@ -387,8 +389,8 @@ class Scrim(commands.Cog):
         await checkout_channel.send(content="**CLOSED**")
 
     @scrim.command(name="reset", brief="Reset teams and open next scrim sessions", description="Reset teams and open "
-                                                                    "next scrim sessions\n\nSteps:\n1. Select scrims"
-                                                                    "\n2. Select day")
+                                                                                               "next scrim sessions\n\nSteps:\n1. Select scrims"
+                                                                                               "\n2. Select day")
     @commands.has_guild_permissions(administrator=True)
     async def reset_scrim(self, ctx):
         await ctx.message.delete()
@@ -466,11 +468,6 @@ class Scrim(commands.Cog):
         scrim_id = selected_scrim['id']
         if target == "lootspot":
             lootspot_channels_ids = self.db.get_lootspot_channel_ids(scrim_id=scrim_id)
-
-            num_to_symbol = {
-                1: '1️⃣', 2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣', 6: '6️⃣',
-                7: '7️⃣', 8: '8️⃣', 9: '9️⃣'
-            }
 
             description = "{} Today\n{} Tomorrow".format(num_to_symbol[1], num_to_symbol[2])
             embed = discord.Embed(title="Day select", description=description)
@@ -877,10 +874,12 @@ class Scrim(commands.Cog):
             if member_in_team(member):
                 if not has_team_role(member):
                     await member.add_roles(team_role, reason="Update team roles", atomic=False)
+                    print("Member [{}]: Team role given".format(member.name))
                     change_count += 1
             else:
                 if has_team_role(member):
                     await member.remove_roles(team_role, reason="Update team roles", atomic=False)
+                    print("Member [{}]: Team role removed".format(member.name))
                     change_count += 1
 
         print("Role changes: {}".format(change_count))
