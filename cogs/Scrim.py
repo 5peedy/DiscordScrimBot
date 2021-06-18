@@ -854,7 +854,7 @@ class Scrim(commands.Cog):
     @commands.has_guild_permissions(administrator=True)
     async def update_team_role(self, ctx):
         team_role_id = 580622910377558026
-        team_role = discord.utils.get(ctx.guild, id=team_role_id)
+        team_role = discord.utils.get(ctx.guild.roles, id=team_role_id)
 
         change_count = 0;
 
