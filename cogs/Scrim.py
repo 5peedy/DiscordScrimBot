@@ -196,6 +196,19 @@ class Scrim(commands.Cog):
         for lobby_embed in lobbies:
             await announce_channel.send(embed=lobby_embed)
 
+    def get_team_tier(self, team_role, guild):
+        tier = 99
+
+        if len(team_role.members) == 0:
+            return tier
+
+        for tier_role in self.db.get_tier_roles(server_id=guild.id):
+            for role in team_role.members[0].roles:
+                if tier_role['id'] == role.id:
+                    tier = tier_role['tier']
+
+        return tier
+
     @commands.command(name="test")
     async def test(self, ctx):
         for role in ctx.message.role_mentions:
@@ -778,7 +791,7 @@ class Scrim(commands.Cog):
         for member in team_members:
             await member.add_roles(tier_role, team_role, reason="Team creation", atomic=False)
 
-    #'@team.command(name="edit", brief="Edit a team")
+    # '@team.command(name="edit", brief="Edit a team")
     @commands.has_guild_permissions(administrator=True)
     async def team_edit(self, ctx):
         channel = ctx.message.channel
@@ -835,12 +848,72 @@ class Scrim(commands.Cog):
         if selected == selected[0]:
             pass  # ToDo make functions for selected category
 
-    #@commands.group(name="player", brief="Commands for player tame management")
+    @team.command(name="list", brief="list all teams sorted by tier")
+    @commands.has_guild_permissions(administrator=True)
+    async def team_list(self, ctx):
+        await ctx.message.delete()
+
+        guild = ctx.guild
+        channel = ctx.message.channel
+
+        teams = []
+
+        for role in guild.roles:
+            if is_role_team(role):
+                tier = self.get_team_tier(role, guild)
+                teams.append({"team_role": role, "tier": tier})
+
+        tiers = self.db.get_tier_roles(guild.id)
+
+        embed = discord.Embed(title="Team list", color=blue)
+
+        for tier in tiers:
+            temp_teams = list(filter(lambda x: x['tier'] == tier['tier'], teams))
+            temp_teams = sorted(temp_teams, key=lambda k: k["team_role"].name)
+
+            if len(temp_teams) == 0:
+                embed.add_field(name="Tier {}".format(tier['tier']), value="No teams with this tier")
+                await channel.send("**Tier {}[{}]:**".format(tier['mention'], len(temp_teams)), embed=embed)
+                embed.clear_fields()
+
+            embed_items = 20
+            embed_count = int(len(temp_teams) / embed_items)
+            if (len(temp_teams) - embed_items * embed_count) % embed_items != 0:
+                embed_count += 1
+
+                for embed_nr in range(embed_count):
+                    if embed_nr == 0:
+                        await channel.send("**Tier {}[{}]:**".format(tier['mention'], len(temp_teams)))
+
+                    description = ""
+
+                    iterate_limit = 20
+                    if len(temp_teams) < 20:
+                        iterate_limit = len(temp_teams)
+
+                    for i in range(iterate_limit):
+                        team = temp_teams.pop(0)
+                        description += "{}\n".format(team["team_role"].mention)
+
+                    embed.add_field(name="Tier {}".format(tier['tier']), value=description)
+                    await channel.send(embed=embed)
+                    embed.clear_fields()
+
+        rest_teams = list(filter(lambda x: x['tier'] == 99, teams))
+        value = ""
+        for team in rest_teams:
+            value += "{}\n".format(team['team_role'].mention)
+
+        embed.add_field(name="Lost teams", value=value)
+        await channel.send("**Lost teams[{}]**".format(len(rest_teams)), embed=embed)
+        embed.clear_fields()
+
+    # @commands.group(name="player", brief="Commands for player tame management")
     @commands.has_guild_permissions(administrator=True)
     async def player(self, ctx):
         pass
 
-    #@player.command(name="add", brief="Add a player to an existing team", invoke_without_command=True)
+    # @player.command(name="add", brief="Add a player to an existing team", invoke_without_command=True)
     @commands.has_guild_permissions(administrator=True)
     async def player_add(self, ctx):
         pass
