@@ -60,4 +60,11 @@ async def globally_block_bot(ctx):
     return not ctx.author.bot
 
 
+@client.command(name="restart", brief="reconnect to database")
+async def reconnect_db(ctx):
+    await ctx.message.delete()
+    client.db = MySQLCon(config['db']['host'], config['db']['user'], config['db']['password'], config['db']['database'])
+    await Notification.send_approve(ctx, description="Reconnected to database")
+
+
 client.run(TOKEN, bot=True, reconnect=True)
