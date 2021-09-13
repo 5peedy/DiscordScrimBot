@@ -61,6 +61,7 @@ async def globally_block_bot(ctx):
 
 
 @client.command(name="restart", brief="reconnect to database")
+@commands.has_guild_permissions(administrator=True)
 async def reconnect_db(ctx):
     await ctx.message.delete()
     client.db = MySQLCon(config['db']['host'], config['db']['user'], config['db']['password'], config['db']['database'])
