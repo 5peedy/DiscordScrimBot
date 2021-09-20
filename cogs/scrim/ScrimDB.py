@@ -5,11 +5,17 @@ import mysql.connector
 
 class ScrimDB:
     def __init__(self, client):
+        self.client = client
         self.db = client.db
+        self.cursor = self.db.cursor()
+
+    def update(self):
+        self.db = self.client.db
         self.cursor = self.db.cursor()
 
     def init_scrim(self, name, lobby_count, mode, min_teams, max_teams, checkin_channel_id, checkout_channel_id,
                    lobbystatus_channel_id, lobbyannounce_channel_id, server_id, lootspots):
+        self.update()
         query = "INSERT INTO scrims " \
                 "(scrim_name, mode, lobby_count, min_teams, max_teams, checkin_channel_id, checkout_channel_id," \
                 "lobbystatus_channel_id, lobbyannounce_channel_id, open, server_id) " \
@@ -27,21 +33,25 @@ class ScrimDB:
         self.db.commit()
 
     def open_scrim(self, server_id, scrim_name):
+        self.update()
         query = "UPDATE scrims SET open = 1 WHERE server_id = {} AND scrim_name = '{}'".format(server_id, scrim_name)
         self.cursor.execute(query)
         self.db.commit()
 
     def close_scrim(self, server_id, scrim_name):
+        self.update()
         query = "UPDATE scrims SET open = 0 WHERE server_id = {} AND scrim_name = '{}'".format(server_id, scrim_name)
         self.cursor.execute(query)
         self.db.commit()
 
     def reset_scrim(self, scrim_id):
+        self.update()
         query = "DELETE FROM teams WHERE scrim_id = {}".format(scrim_id)
         self.cursor.execute(query)
         self.db.commit()
 
     def add_team(self, role_id, name, tier, scrim_id, mention):
+        self.update()
         query = "SELECT team_id FROM teams WHERE role_id={} AND scrim_id={}".format(role_id, scrim_id)
         self.cursor.execute(query)
         if self.cursor.fetchone() is not None:
@@ -53,6 +63,7 @@ class ScrimDB:
         return True
 
     def del_team(self, role_id, scrim_id):
+        self.update()
         query = "SELECT team_id FROM teams WHERE role_id={} AND scrim_id={}".format(role_id, scrim_id)
         self.cursor.execute(query)
         if self.cursor.fetchone() is None:
@@ -63,6 +74,7 @@ class ScrimDB:
         return True
 
     def get_scrim_id(self, server_id, scrim_name=None, checkin_id=None, checkout_id=None):
+        self.update()
         if scrim_name is not None:
             query = "SELECT id FROM scrims WHERE server_id = {} AND scrim_name = '{}'".format(server_id, scrim_name)
         elif checkin_id is not None:
@@ -75,16 +87,19 @@ class ScrimDB:
         return self.cursor.fetchone()[0]
 
     def get_scrim_name(self, scrim_id):
+        self.update()
         query = "SELECT scrim_name FROM scrims WHERE id = {}".format(scrim_id)
         self.cursor.execute(query)
         return self.cursor.fetchone()[0]
 
     def get_server_from_scrim(self, scrim_id):
+        self.update()
         query = "SELECT server_id FROM scrims WHERE id = {}".format(scrim_id)
         self.cursor.execute(query)
         return self.cursor.fetchone()[0]
 
     def get_scrims(self, server_id):
+        self.update()
         query = "SELECT scrim_name, id FROM scrims WHERE server_id = {}".format(server_id)
         self.cursor.execute(query)
         fetched = self.cursor.fetchall()
@@ -97,6 +112,7 @@ class ScrimDB:
         return result
 
     def get_scrim_channels(self, scrim_id):
+        self.update()
         query = "SELECT checkin_channel_id, checkout_channel_id, lobbystatus_channel_id, lobbyannounce_channel_id " \
                 "FROM scrims WHERE id = {}".format(scrim_id)
         self.cursor.execute(query)
@@ -110,6 +126,7 @@ class ScrimDB:
         return result
 
     def get_lootspot_channel_ids(self, scrim_id):
+        self.update()
         query = "SELECT channel_id FROM lobby_channels WHERE scrim_id = {}".format(scrim_id)
         self.cursor.execute(query)
         fetched = self.cursor.fetchall()
@@ -119,11 +136,13 @@ class ScrimDB:
         return result
 
     def get_scrim_mode(self, scrim_id):
+        self.update()
         query = "SELECT mode FROM scrims WHERE id = {}".format(scrim_id)
         self.cursor.execute(query)
         return self.cursor.fetchone()[0]
 
     def get_scrim_lobby_params(self, scrim_id):
+        self.update()
         query = "SELECT lobby_count, min_teams, max_teams FROM scrims WHERE id = {}".format(scrim_id)
         self.cursor.execute(query)
         fetched = self.cursor.fetchone()
@@ -135,6 +154,7 @@ class ScrimDB:
         return result
 
     def get_scrim_teams(self, scrim_id):
+        self.update()
         query = "SELECT role_id, tier, mention FROM teams WHERE scrim_id = {} ORDER BY team_id".format(scrim_id)
         self.cursor.execute(query)
         fetched = self.cursor.fetchall()
@@ -149,6 +169,7 @@ class ScrimDB:
         return result
 
     def get_tier_roles(self, server_id):
+        self.update()
         query = "SELECT role_id, tier, mention FROM tier_roles WHERE server_id = '{}' ORDER BY tier".format(server_id)
         self.cursor.execute(query)
         fetched = self.cursor.fetchall()
@@ -163,6 +184,7 @@ class ScrimDB:
         return result
 
     def is_scrims_open(self, server_id, checkin=None, checkout=None):
+        self.update()
         if checkin is not None:
             query = "SELECT open FROM scrims WHERE server_id = '{}' AND checkin_channel_id = '{}'".format(server_id,
                                                                                                           checkin)
@@ -177,6 +199,7 @@ class ScrimDB:
             return False
 
     def is_checkin_channel(self, server_id, channel_id):
+        self.update()
         query = "SELECT id FROM scrims WHERE server_id = {} AND checkin_channel_id = {}".format(server_id, channel_id)
         self.cursor.execute(query)
         result = self.cursor.fetchone()
@@ -186,6 +209,7 @@ class ScrimDB:
             return False
 
     def is_checkout_channel(self, server_id, channel_id):
+        self.update()
         query = "SELECT id FROM scrims WHERE server_id = {} AND checkout_channel_id = {}".format(server_id, channel_id)
         self.cursor.execute(query)
         result = self.cursor.fetchone()
@@ -195,6 +219,7 @@ class ScrimDB:
             return False
 
     def is_tier_role(self, server_id, role_id):
+        self.update()
         query = "SELECT id FROM tier_roles WHERE server_id = {} AND role_id = {}".format(server_id, role_id)
         self.cursor.execute(query)
         result = self.cursor.fetchone()

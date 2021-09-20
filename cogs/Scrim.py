@@ -209,11 +209,6 @@ class Scrim(commands.Cog):
 
         return tier
 
-    @commands.command(name="test")
-    async def test(self, ctx):
-        for role in ctx.message.role_mentions:
-            print(role.mention)
-
     @commands.group(name="scrim", alias="scrims", invoke_without_command=True, brief="Commands for scrim handling")
     @commands.has_guild_permissions(administrator=True)
     async def scrim(self, ctx):
