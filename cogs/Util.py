@@ -9,6 +9,13 @@ red = 0xD10000
 orange = 0xff8800
 blue = 0x007BFD
 
+mix_term = "Just remember that you have to show up, play all games and play serious.\n-Not showing up for scrims = 3 months ban and you wont be allowed to scrim as a mix team again\n-You still have to write lootspots and tag all players in your lootspot post.\n\nDo you accept this and accept that you have the full responsibility for your team, and strikes means we need to reevaluate you access to these scrims?"
+
+def is_role_team(role):
+    if role.color.value == 1177361:
+        return True
+    return False
+
 
 class Util(commands.Cog):
     def __init__(self, client):
@@ -18,6 +25,18 @@ class Util(commands.Cog):
     @commands.has_guild_permissions(administrator=True)
     async def clear(self, ctx):
         pass
+
+    @commands.group(name="utils", brief="Useful scripts", invoke_without_command=True)
+    @commands.has_guild_permissions(administrator=True)
+    async def utils(self, ctx):
+        pass
+
+    @utils.command(name="mixterms")
+    @commands.has_guild_permissions(administrator=True)
+    async def mix_terms(self, ctx):
+        channel = ctx.message.channel
+
+        await channel.send(mix_term)
 
     @clear.command(name="category", brief="Delets all channels inside a category")
     @commands.has_guild_permissions(administrator=True)
