@@ -21,17 +21,17 @@ class Util(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.group(name="clear", alias="scrims", invoke_without_command=True, brief="Commands for scrim handling")
+    @commands.group(name="clear", invoke_without_command=True)
     @commands.has_guild_permissions(administrator=True)
     async def clear(self, ctx):
         pass
 
-    @commands.group(name="utils", brief="Useful scripts", invoke_without_command=True)
+    #@commands.group(name="utils", alias="util", brief="Useful scripts", invoke_without_command=True)
     @commands.has_guild_permissions(administrator=True)
     async def utils(self, ctx):
         pass
 
-    @utils.command(name="mixterms")
+    @commands.command(name="mixterms")
     @commands.has_guild_permissions(administrator=True)
     async def mix_terms(self, ctx):
         channel = ctx.message.channel
