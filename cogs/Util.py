@@ -122,7 +122,7 @@ class Util(commands.Cog):
 
                 roles_to_remove = list_roles_to_remove(member)
                 for role_to_remove in roles_to_remove:
-                    await member.remove_roles(team_role, reason="Update team roles", atomic=False)
+                    await member.remove_roles(role_to_remove, reason="Update team roles", atomic=False)
                     print("Member [{}]: {} role removed".format(member.name, role_to_remove.name))
                     change_count += 1
 
