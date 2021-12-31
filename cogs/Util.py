@@ -138,7 +138,7 @@ class Util(commands.Cog):
 
         result_embed = discord.Embed(title="Result of cleansing", color=green)
         result_embed.add_field(name="Changes", value="{}".format(change_count))
-        result_message = await ctx.channel.send(embed=notification_embed, delete_after=300)
+        result_message = await ctx.channel.send(embed=result_embed, delete_after=300)
 
     @utils.group(name="sort", invoke_without_command=True, brief="Sorting scripts")
     @commands.has_guild_permissions(administrator=True)
