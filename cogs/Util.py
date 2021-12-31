@@ -136,7 +136,7 @@ class Util(commands.Cog):
 
         await notification_message.delete()
 
-        result_embed = discord.Embed(title="Result of cleansing", color=green)
+        result_embed = discord.Embed(title="Result of update", color=green)
         result_embed.add_field(name="Changes", value="{}".format(change_count))
         result_message = await ctx.channel.send(embed=result_embed, delete_after=300)
 
