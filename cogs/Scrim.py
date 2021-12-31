@@ -913,45 +913,6 @@ class Scrim(commands.Cog):
     async def player_add(self, ctx):
         pass
 
-    @commands.group(name="utils", brief="Useful scripts", invoke_without_command=True)
-    @commands.has_guild_permissions(administrator=True)
-    async def utils(self, ctx):
-        pass
-
-    @utils.command(name="updateTeamRole")
-    @commands.has_guild_permissions(administrator=True)
-    async def update_team_role(self, ctx):
-        team_role_id = 580622910377558026
-        team_role = discord.utils.get(ctx.guild.roles, id=team_role_id)
-
-        change_count = 0
-
-        def member_in_team(member):
-            for role in member.roles:
-                if is_role_team(role):
-                    return True
-            return False
-
-        def has_team_role(member):
-            for role in member.roles:
-                if role.id == team_role_id:
-                    return True
-            return False
-
-        for member in ctx.guild.members:
-            if member_in_team(member):
-                if not has_team_role(member):
-                    await member.add_roles(team_role, reason="Update team roles", atomic=False)
-                    print("Member [{}]: Team role given".format(member.name))
-                    change_count += 1
-            else:
-                if has_team_role(member):
-                    await member.remove_roles(team_role, reason="Update team roles", atomic=False)
-                    print("Member [{}]: Team role removed".format(member.name))
-                    change_count += 1
-
-        print("Role changes: {}".format(change_count))
-
 
 def setup(client):
     client.add_cog(Scrim(client))

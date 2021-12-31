@@ -70,5 +70,88 @@ class Util(commands.Cog):
                 await channel.delete()
 
 
+
+    @utils.command(name="updateTeamRole")
+    @commands.has_guild_permissions(administrator=True)
+    async def update_team_role(self, ctx):
+        team_role_id = 580622910377558026
+        roles_to_remove_ids = [
+            686981939298566196,
+            687256873552052268,
+            687256225724891152,
+            687257221112922128,
+            688134269775773723,
+            580622126709604389,
+            580622737995989012
+        ]
+        team_role = discord.utils.get(ctx.guild.roles, id=team_role_id)
+
+        change_count = 0
+
+        def member_in_team(member):
+            for role in member.roles:
+                if is_role_team(role):
+                    return True
+            return False
+
+        def has_team_role(member):
+            for role in member.roles:
+                if role.id == team_role_id:
+                    return True
+            return False
+
+        def list_roles_to_remove(member):
+            role_list = []
+
+            for role in member.roles:
+                for role_remove_id in roles_to_remove_ids:
+                    if role.id == role_remove_id:
+                        role_list.append(role)
+
+            return role_list
+
+        for member in ctx.guild.members:
+            if member_in_team(member):
+                if not has_team_role(member):
+                    await member.add_roles(team_role, reason="Update team roles", atomic=False)
+                    print("Member [{}]: Team role given".format(member.name))
+                    change_count += 1
+            else:
+                if has_team_role(member):
+                    await member.remove_roles(team_role, reason="Update team roles", atomic=False)
+                    print("Member [{}]: Team role removed".format(member.name))
+                    change_count += 1
+
+                roles_to_remove = list_roles_to_remove(member)
+                for role_to_remove in roles_to_remove:
+                    await member.remove_roles(team_role, reason="Update team roles", atomic=False)
+                    print("Member [{}]: {} role removed".format(member.name, role_to_remove.name))
+                    change_count += 1
+
+        print("Role changes: {}".format(change_count))
+
+    @utils.group(name="sort", invoke_without_command=True, brief="Sorting scripts")
+    @commands.has_guild_permissions(administrator=True)
+    async def sort(self):
+        pass
+
+    @sort.command(name="teams")
+    @commands.has_guild_permissions(administrator=True)
+    async def sort_teams(self, ctx):
+        guild = ctx.guild
+
+        teams = []
+        other_roles = []
+
+        for role in guild.roles:
+            if is_role_team(role):
+                teams.append(role)
+            else:
+                other_roles.append(role)
+
+        teams = sorted(teams, key=lambda role: role.name)
+
+        positions = dict.fromkeys()
+
 def setup(client):
     client.add_cog(Util(client))
