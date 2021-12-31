@@ -72,7 +72,7 @@ class Util(commands.Cog):
     @utils.command(name="updateRoles")
     @commands.has_guild_permissions(administrator=True)
     async def update_roles(self, ctx):
-        await ctx.messsage.delete()
+        await ctx.message.delete()
 
         notification_embed = discord.Embed(title="Updating roles in progress", color=orange)
         notification_embed.add_field(name="Roles that are checked by command", value="Team, Captain, Tier")
