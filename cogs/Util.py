@@ -75,7 +75,7 @@ class Util(commands.Cog):
         await ctx.message.delete()
 
         notification_embed = discord.Embed(title="Updating roles in progress", color=orange)
-        notification_embed.add_field(name="Roles that are checked by command", value="Team, Captain, Tier")
+        notification_embed.add_field(name="Roles that are checked by command", value="Team, Captain, Tier, Coach")
         notification_message = await ctx.channel.send(embed=notification_embed)
 
         team_role_id = 580622910377558026
