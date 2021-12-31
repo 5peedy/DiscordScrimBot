@@ -26,7 +26,7 @@ class Util(commands.Cog):
     async def clear(self, ctx):
         pass
 
-    #@commands.group(name="utils", alias="util", brief="Useful scripts", invoke_without_command=True)
+    @commands.group(name="utils", alias="util", brief="Useful scripts", invoke_without_command=True)
     @commands.has_guild_permissions(administrator=True)
     async def utils(self, ctx):
         pass
@@ -68,8 +68,6 @@ class Util(commands.Cog):
         else:
             for channel in category.channels:
                 await channel.delete()
-
-
 
     @utils.command(name="updateTeamRole")
     @commands.has_guild_permissions(administrator=True)
