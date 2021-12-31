@@ -69,9 +69,15 @@ class Util(commands.Cog):
             for channel in category.channels:
                 await channel.delete()
 
-    @utils.command(name="updateTeamRole")
+    @utils.command(name="updateRoles")
     @commands.has_guild_permissions(administrator=True)
-    async def update_team_role(self, ctx):
+    async def update_roles(self, ctx):
+        await ctx.messsage.delete()
+
+        notification_embed = discord.Embed(title="Updating roles in progress", color=orange)
+        notification_embed.add_field(name="Roles that are checked by command", value="Team, Captain, Tier")
+        notification_message = await ctx.channel.send(embed=notification_embed)
+
         team_role_id = 580622910377558026
         roles_to_remove_ids = [
             686981939298566196,
@@ -127,6 +133,12 @@ class Util(commands.Cog):
                     change_count += 1
 
         print("Role changes: {}".format(change_count))
+
+        await notification_message.delete()
+
+        result_embed = discord.Embed(title="Result of cleansing", color=green)
+        result_embed.add_field(name="Changes", value="{}".format(change_count))
+        result_message = await ctx.channel.send(embed=notification_embed, delete_after=300)
 
     @utils.group(name="sort", invoke_without_command=True, brief="Sorting scripts")
     @commands.has_guild_permissions(administrator=True)
