@@ -505,7 +505,7 @@ class Scrim(commands.Cog):
             elif reaction.emoji == num_to_symbol[2]:
                 scrim_day = Dates_time.get_tomorrow()
 
-            lootspot_text = "Lootspots for {}\n**You have to write lootspot until 18:50**\n \n-Lootspot has to be posted until 18:50\n-One main lootspot has to be posted for each map. **No alt spots allowed**\n-Preferable post both lootspots in **ONE picture** or in text form\n-Make sure to read all lootspot rules in #Rules\n\nPlease use this template if playing under a team:\nTeam&Tier:\nErangel:\nMiramar:\n\nPlease use this template if playing as a mix team:\n@Player1 MIX @Player2 @Player3 @Player4:\nErangel:\nMiramar:".format(
+            lootspot_text = "Lootspots for {}\n**You have to write lootspot until 18:50**\n \n-One main lootspot has to be posted for each map. **No alt spots allowed**\n-Preferable post both lootspots in **ONE picture** or in text form\n-Make sure to read all lootspot rules in #Rules\n\nPlease use this template if playing under a team:\nTeam&Tier:\nErangel:\nMiramar:\n\nPlease use this template if playing as a mix team:\n@Player1 MIX @Player2 @Player3 @Player4:\nErangel:\nMiramar:".format(
                 scrim_day)
 
             lootspot_channels = []
