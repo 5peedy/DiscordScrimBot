@@ -9,7 +9,7 @@ red = 0xD10000
 orange = 0xff8800
 blue = 0x007BFD
 
-mix_term = "Just remember that you have to show up, play all games and play serious.\n-Not showing up for scrims = 3 months ban and you wont be allowed to scrim as a mix team again\n-You still have to write lootspots and tag all players in your lootspot post.\n\nDo you accept this and accept that you have the full responsibility for your team, and strikes means we need to reevaluate you access to these scrims?"
+mix_term = "Just remember that you have to show up, play all games and play serious.\n-Not showing up for scrims = 2 months ban and you wont be allowed to scrim as a mix team again\n-You still have to write lootspots and tag all players in your lootspot post.\n\nDo you accept this and accept that you have the full responsibility for your team, and strikes means we need to reevaluate you access to these scrims?"
 
 def is_role_team(role):
     if role.color.value == 1177361:
