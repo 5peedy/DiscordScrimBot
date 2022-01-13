@@ -89,7 +89,7 @@ class Scrim(commands.Cog):
             scrim_name = self.db.get_scrim_name(scrim_id=scrim_id)
 
         for lobby in range(1, lobby_count + 1):
-            lobby_status_embed = discord.Embed(title=scrim_name + str(), color=green)
+            lobby_status_embed = discord.Embed(title="{} - {}".format(scrim_name, Dates_time.get_today()), color=green)
             text = ""
             addition = 0
             if lobby <= unbalanced_team_addition:
