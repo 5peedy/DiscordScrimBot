@@ -642,6 +642,73 @@ class Scrim(commands.Cog):
 
         await self.update_lobby(scrim_id=scrim_id)
 
+    @commands.command(name="checkinT1", brief="Check in a T1 team or Mix")
+    @commands.has_guild_permissions(administrator=True)
+    async def checkinT1(self, ctx):
+        await ctx.message.delete()
+        admin = self.client.db.is_admin(server_id=ctx.guild.id, member=ctx.message.author)
+
+        if not self.db.is_checkin_channel(server_id=ctx.guild.id, channel_id=ctx.message.channel.id):
+            await Notification.send_alert(ctx=ctx, header="No check in channel",
+                                          content="You have to use a check in channel")
+            return
+
+        team_tag = None
+        member_tag = None
+
+        if len(ctx.message.role_mentions) != 0:
+            team_tag = ctx.message.role_mentions[0]
+        if len(ctx.message.mentions) != 0:
+            member_tag = ctx.message.mentions[0]
+
+        if team_tag is None and member_tag is None:
+            await Notification.send_alert(ctx=ctx, header="No team or member tagged",
+                                          content="Use:\n{}checkin <@your team>\nor\n{}checkin <@yourself>"
+                                                  "".format(self.client.prefix, self.client.prefix))
+            return
+
+        if not self.db.is_scrims_open(server_id=ctx.guild.id, checkin=ctx.message.channel.id) and not admin:
+            await Notification.send_alert(ctx=ctx, header="Scrims are not open",
+                                          content="You can not check in right now")
+            return
+
+        if team_tag is not None:
+            if not is_role_team(role=team_tag):
+                await Notification.send_alert(ctx=ctx, header="Role is no team", content="You have to tag a team role")
+                return
+
+            if not is_team_member(team=team_tag, member=ctx.message.author) and not admin:
+                await Notification.send_alert(ctx=ctx, header="Command denied",
+                                              content="You have no permission to check in this team")
+                return
+
+            role_id = team_tag.id
+            name = team_tag.name
+            tier = 1
+            mention = team_tag.mention
+            description = "{} *checked in by* {}".format(team_tag.mention, ctx.message.author.mention)
+        else:
+            if not member_tag == ctx.message.author and not admin:
+                await Notification.send_alert(ctx=ctx, header="Command denied",
+                                              content="You have no permission to check in this MIX")
+                return
+
+            name = member_tag.name + " MIX"
+            role_id = member_tag.id
+            tier = 1
+            mention = member_tag.mention
+            description = "{}, MIX *checked in by* {}".format(member_tag.mention, ctx.message.author.mention)
+        scrim_id = self.db.get_scrim_id(server_id=ctx.guild.id, checkin_id=ctx.message.channel.id)
+
+        if not self.db.add_team(role_id=role_id, name=name, tier=tier, mention=mention, scrim_id=scrim_id):
+            await Notification.send_alert(ctx=ctx, header="Team is already checked in",
+                                          content="You cant check in twice")
+            return
+
+        await Notification.send_approve(ctx=ctx, title="Check in", description=description, permanent=True)
+
+        await self.update_lobby(scrim_id=scrim_id)
+
     @commands.command(name="checkout", brief="Check out a team or Mix")
     async def checkout(self, ctx):
         await ctx.message.delete()
