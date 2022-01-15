@@ -232,6 +232,7 @@ class ScrimDB:
         query = "SELECT date FROM scrims WHERE server_id = {} AND scrim_name = '{}'".format(server_id, scrim_name)
         self.cursor.execute(query)
         result = self.cursor.fetchone()
+        print(result)
         if result is None:
             return ""
         else:
