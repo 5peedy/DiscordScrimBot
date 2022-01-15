@@ -163,5 +163,9 @@ class Util(commands.Cog):
 
         positions = dict.fromkeys()
 
+    @commands.command(name="test")
+    async def test(self, ctx):
+        print(ctx.message.channel.mention)
+
 def setup(client):
     client.add_cog(Util(client))
