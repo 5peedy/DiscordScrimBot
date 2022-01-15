@@ -229,7 +229,7 @@ class ScrimDB:
             return False
 
     def get_date(self, server_id, scrim_name):
-        query = "SELECT date FROM scrims WHERE server_id = {} AND scrim_name = {}".format(server_id, scrim_name)
+        query = "SELECT date FROM scrims WHERE server_id = {} AND scrim_name = '{}'".format(server_id, scrim_name)
         self.cursor.execute(query)
         result = self.cursor.fetchone()
         if result is None:
