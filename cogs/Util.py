@@ -9,7 +9,7 @@ red = 0xD10000
 orange = 0xff8800
 blue = 0x007BFD
 
-mix_term = "**MIX role request**\n**Step 1**: Tag your teammates to gain access to the MIX role.\n-You can tag your teammates in #<801568740353245194> chat and copy them in here.\n\n**Step 2**: Accept our terms by writing \"I accept the MIX terms\"\nTerms:\n-Make sure to read ALL #<580608132884201472>.\n-Make sure to understand #<733081474332360892>.\n-Recieving strikes means that we have to reevaluate your access to MIX scrims.\n\n**Reminder**\nYou always need to tag your teammates in lootspot posts when playing MIX team. You dont need to inform us."
+mix_term = "**MIX role request**\n**Step 1**: Tag your teammates to gain access to the MIX role.\n-You can tag your teammates in <#801568740353245194> chat and copy them in here.\n\n**Step 2**: Accept our terms by writing \"I accept the MIX terms\"\nTerms:\n-Make sure to read ALL <#580608132884201472>.\n-Make sure to understand <#733081474332360892>.\n-Recieving strikes means that we have to reevaluate your access to MIX scrims.\n\n**Reminder**\nYou always need to tag your teammates in lootspot posts when playing MIX team. You dont need to inform us."
 
 def is_role_team(role):
     if role.color.value == 1177361:
@@ -162,10 +162,6 @@ class Util(commands.Cog):
         teams = sorted(teams, key=lambda role: role.name)
 
         positions = dict.fromkeys()
-
-    @commands.command(name="test")
-    async def test(self, ctx):
-        print(ctx.message.channel.mention)
 
 def setup(client):
     client.add_cog(Util(client))
