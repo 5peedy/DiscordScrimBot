@@ -9,7 +9,7 @@ red = 0xD10000
 orange = 0xff8800
 blue = 0x007BFD
 
-mix_term = "Just remember that you have to show up, play all games and play serious.\n-Not showing up for scrims = 2 months ban and you wont be allowed to scrim as a mix team again\n-You still have to write lootspots and tag all players in your lootspot post.\n\nDo you accept this and accept that you have the full responsibility for your team, and strikes means we need to reevaluate you access to these scrims?"
+mix_term = "**MIX role request**\n**Step 1**: Tag your teammates to gain access to the MIX role.\n-You can tag your teammates in #<801568740353245194> chat and copy them in here.\n\n**Step 2**: Accept our terms by writing \"I accept the MIX terms\"\nTerms:\n-Make sure to read ALL #<580608132884201472>.\n-Make sure to understand #<733081474332360892>.\n-Recieving strikes means that we have to reevaluate your access to MIX scrims.\n\n**Reminder**\nYou always need to tag your teammates in lootspot posts when playing MIX team. You dont need to inform us."
 
 def is_role_team(role):
     if role.color.value == 1177361:
