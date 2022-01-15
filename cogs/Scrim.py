@@ -404,6 +404,7 @@ class Scrim(commands.Cog):
     @commands.has_guild_permissions(administrator=True)
     async def reset_scrim(self, ctx):
         await ctx.message.delete()
+        server_id = ctx.guild.id
         selected_scrim = await self.select_scrim(server_id=ctx.guild.id, ctx=ctx)
         scrim_id = selected_scrim['id']
         scrim_name = selected_scrim['name']
@@ -462,6 +463,7 @@ class Scrim(commands.Cog):
         scrim_channels = self.db.get_scrim_channels(scrim_id=scrim_id)
         checkin_channel = ctx.guild.get_channel(scrim_channels['checkin'])
         checkout_channel = ctx.guild.get_channel(scrim_channels['checkout'])
+        self.db.set_date(server_id, scrim_name, str(scrim_day))
         await checkout_channel.purge(limit=100)
         await checkout_channel.send(embed=checkout_info)
         await checkin_channel.purge(limit=100)
