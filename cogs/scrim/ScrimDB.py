@@ -238,6 +238,6 @@ class ScrimDB:
             return result
 
     def set_date(self, server_id, scrim_name, scrim_date):
-        query = "UPDATE scrims SET scrim_date = {} WHERE server_id = {} AND scrim_name = {}".format(scrim_date, server_id, scrim_name)
+        query = "UPDATE scrims SET scrim_date = {} WHERE server_id = {} AND scrim_name = '{}'".format(scrim_date, server_id, scrim_name)
         self.cursor.execute(query)
         self.db.commit()
