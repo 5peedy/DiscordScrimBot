@@ -157,6 +157,41 @@ class Scrim(commands.Cog):
             if symbol == reaction.emoji:
                 return scrims[number - 1]
 
+    async def confirm_embed(self, ctx, message):
+        num_to_symbol = {
+            1: '1️⃣', 2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣', 6: '6️⃣',
+            7: '7️⃣', 8: '8️⃣', 9: '9️⃣'
+        }
+        confirm_embed = discord.Embed(title="Conrirm {}".format(message),
+                                      description="You want to preceed?\n {} Yes\n{} No".format(num_to_symbol[1], num_to_symbol[2]))
+        confirm_message = await ctx.channel.send(embed=confirm_embed)
+        for i in range(1, 3):
+            await confirm_message.add_reaction(num_to_symbol[i])
+
+        def confirm_check(reaction, user):
+            if user != ctx.message.author:
+                return False
+
+            if reaction.emoji != num_to_symbol[1] and reaction.emoji != num_to_symbol[2]:
+                return False
+
+            return True
+
+        try:
+            reaction, user = await self.client.wait_for('reaction_add', check=confirm_check, timeout=60.0)
+        except asyncio.TimeoutError:
+            await confirm_message.delete()
+            return
+
+        await confirm_message.delete()
+
+        if reaction.emoji == num_to_symbol[1]:
+            return True
+        elif reaction.emoji == num_to_symbol[2]:
+            return False
+
+        return False
+
     async def update_lobby(self, server_id=None, scrim_id=None, scrim_name=None):
         if scrim_id is None:
             scrim_id = self.db.get_scrim_id(server_id=server_id, scrim_name=scrim_name)
@@ -463,6 +498,14 @@ class Scrim(commands.Cog):
         scrim_channels = self.db.get_scrim_channels(scrim_id=scrim_id)
         checkin_channel = ctx.guild.get_channel(scrim_channels['checkin'])
         checkout_channel = ctx.guild.get_channel(scrim_channels['checkout'])
+
+        #confirm reset
+        confirm = await self.confirm_embed(ctx, "reset scrim lobby")
+
+        if not confirm:
+            await Notification.send_alert(ctx, description="Canceled reset scrims")
+            return
+
         self.db.set_date(server_id, scrim_name, str(scrim_day))
         await checkout_channel.purge(limit=100)
         await checkout_channel.send(embed=checkout_info)
