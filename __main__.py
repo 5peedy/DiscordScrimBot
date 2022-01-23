@@ -4,7 +4,6 @@ from discord import Activity
 from discord.ext import commands
 from discord.ext.commands import Bot
 from discord import Intents
-import sys
 
 from utils.JsonCon import JsonCon
 from utils.MySQLCon import MySQLCon

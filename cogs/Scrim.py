@@ -871,6 +871,13 @@ class Scrim(commands.Cog):
         await tag_members_res.delete()
         team_members = tag_members_res.mentions
 
+        member_mention = ""
+        for member in team_members:
+            member_mention += "{}\n".format(member.mention)
+        add_team_embed.add_field(name="Member", value=member_mention, inline=False)
+        await add_team_status_msg.edit(embed=add_team_embed)
+
+
         """ Tier """
         embed.clear_fields()
         embed.add_field(name="Tier", value="Tag a tier role")
@@ -897,10 +904,19 @@ class Scrim(commands.Cog):
         tier_role = tier_res.role_mentions[0]
 
         team_role = await ctx.guild.create_role(name=team_name, mentionable=True, color=discord.Color(green))
-        for member in team_members:
-            await member.add_roles(tier_role, team_role, reason="Team creation", atomic=False)
+        team_tag_role = ctx.guild.get_role(580622910377558026)
+        cpt_tag_role = ctx.guild.get_role(580622910377558026)
 
-    # '@team.command(name="edit", brief="Edit a team")
+        await team_members[0].add_roles(cpt_tag_role, reason="Team creation", atomic=False)
+        for member in team_members:
+            await member.add_roles(tier_role, team_role, team_tag_role, reason="Team creation", atomic=False)
+
+        add_team_embed.add_field(name="Tier", value=tier_role.mention)
+        await add_team_status_msg.edit(embed=add_team_embed)
+
+        await Notification.send_approve(ctx, header="Action successful", content="Team created")
+
+    #@team.command(name="edit", brief="Edit a team")
     @commands.has_guild_permissions(administrator=True)
     async def team_edit(self, ctx):
         channel = ctx.message.channel
