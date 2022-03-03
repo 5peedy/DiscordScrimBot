@@ -444,8 +444,6 @@ class Scrim(commands.Cog):
         scrim_id = selected_scrim['id']
         scrim_name = selected_scrim['name']
 
-        self.db.reset_scrim(scrim_id=scrim_id)
-
         num_to_symbol = {
             1: '1️⃣', 2: '2️⃣', 3: '3️⃣', 4: '4️⃣', 5: '5️⃣', 6: '6️⃣',
             7: '7️⃣', 8: '8️⃣', 9: '9️⃣'
@@ -506,6 +504,7 @@ class Scrim(commands.Cog):
             await Notification.send_alert(ctx, description="Canceled reset scrims")
             return
 
+        self.db.reset_scrim(scrim_id=scrim_id)
         self.db.set_date(server_id, scrim_name, str(scrim_day))
         await checkout_channel.purge(limit=100)
         await checkout_channel.send(embed=checkout_info)
