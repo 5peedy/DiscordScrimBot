@@ -506,7 +506,7 @@ class Scrim(commands.Cog):
 
         self.db.reset_scrim(scrim_id=scrim_id)
         self.db.set_date(server_id, scrim_name, str(scrim_day))
-        await checkout_channel.purge(limit=100)
+        await checkout_channel.purge(limit=200)
         await checkout_channel.send(embed=checkout_info)
         await checkin_channel.purge(limit=100)
         await checkin_channel.send(embed=checkin_info)
