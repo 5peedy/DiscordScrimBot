@@ -9,8 +9,7 @@ red = 0xD10000
 orange = 0xff8800
 blue = 0x007BFD
 
-mix_term = "**MIX role request**\n**Step 1**: Tag your teammates to gain access to the MIX role.\n-You can tag your teammates in <#946417938322296832> chat and copy them in here.\n\n**Step 2**: Accept our terms by writing \"I accept the MIX terms\"\nTerms:\n-Make sure to read ALL <#580608132884201472>.\n-Make sure to understand <#733081474332360892> and <#948954440109547600>.\n-Recieving strikes means that we have to reevaluate your access to MIX scrims.\n\n**Reminder**\nYou always need to tag your teammates in lootspot posts when playing MIX team. You dont need to inform us."
-
+mix_term = "Thanks for requesting the MIX role. Unfortunately you are not considered as trusted player yet. Therefore, we need the following info to verify your discord/steam account and pubg comp history:\n\n1. Tag the memebers you plan to play with regularly (use general chat and then copy it in here). We will check when the accounts have been created.\n2. Make sure that ALL discord names match the pubg names\n 3. Send us all steam profiles of the players\n 4. Send us links to pubg event pages (Starladder, GLL, ESL, ...), so we can verify the pubg comp history of multiple events\n\nKeep in mind:\n-You have the responsibility for your team. Meaning if you play with temp banned players or players with new steam/discord accounts, you will permanently lose your MIX access\n-Recieving repeatingly strikes may caue you losing the MIX access permanently"
 def is_role_team(role):
     if role.color.value == 1177361:
         return True
