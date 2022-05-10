@@ -487,16 +487,22 @@ class Scrim(commands.Cog):
             scrim_day = Dates_time.get_tomorrow()
 
         checkout_info = discord.Embed(title="Check out for {}".format(scrim_day), color=blue)
-        checkout_info.add_field(name="Checkout Team",
+        checkout_info.add_field(name="Checkout Team (Tier 1-4)",
                                 value="Use \"" + self.client.prefix + "checkout @<your team>\" to checkout your team",
+                                inline=False)
+        checkout_info.add_field(name="Checkout Team (Tier 5)",
+                                value="Use \"" + self.client.prefix + "checkout <your team>\" to checkout your team",
                                 inline=False)
         checkout_info.add_field(name="Checkout MIX",
                                 value="Use \"" + self.client.prefix + "checkout @<yourself>\" to checkout your MIX",
                                 inline=False)
 
         checkin_info = discord.Embed(title="Check in for {}".format(scrim_day), color=blue)
-        checkin_info.add_field(name="Checkin Team",
+        checkin_info.add_field(name="Checkin Team (Tier 1-4)",
                                value="Use \"" + self.client.prefix + "checkin @<your team>\" to checkin your team",
+                               inline=False)
+        checkin_info.add_field(name="Checkin Team (Tier 5)",
+                               value="Use \"" + self.client.prefix + "checkin <your team>\" to checkin your team",
                                inline=False)
         checkin_info.add_field(name="Checkin MIX",
                                value="Use \"" + self.client.prefix + "checkin @<yourself>\" to checkin your MIX",
@@ -560,7 +566,7 @@ class Scrim(commands.Cog):
             elif reaction.emoji == num_to_symbol[2]:
                 scrim_day = Dates_time.get_tomorrow()
 
-            lootspot_text = "Lootspots for {}\n**You have to write lootspot until 18:50**\n \n-One main lootspot has to be posted for each map. **No alt spots allowed**\n-Preferable post both lootspots in **ONE picture** or in text form\n-Make sure to read all lootspot rules in #📢│rules\n\nPlease use this template if playing under a team:\nTeam&Tier:\nErangel:\nMiramar:\n\nPlease use this template if playing as a mix team:\n@Player1 MIX @Player2 @Player3 @Player4:\nErangel:\nMiramar:".format(
+            lootspot_text = "**Lootspots for {}**\n\n-You have to write lootspots until 18:50\n-One main lootspot has to be posted for each map. No alt spots allowed\n\nPlease use this template if playing under a team:\nTeam&Tier:\nErangel:\nMiramar:\n\nPlease use this template if playing as a mix team:\n@Player1 MIX @Player2 @Player3 @Player4:\nErangel:\nMiramar:".format(
                 scrim_day)
 
             lootspot_channels = []
