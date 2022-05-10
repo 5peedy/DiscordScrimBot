@@ -46,6 +46,7 @@ def is_team_member(team, member):
     return False
 
 
+
 class Scrim(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -163,7 +164,8 @@ class Scrim(commands.Cog):
             7: '7️⃣', 8: '8️⃣', 9: '9️⃣'
         }
         confirm_embed = discord.Embed(title="Conrirm {}".format(message),
-                                      description="You want to preceed?\n {} Yes\n{} No".format(num_to_symbol[1], num_to_symbol[2]))
+                                      description="You want to preceed?\n {} Yes\n{} No".format(num_to_symbol[1],
+                                                                                                num_to_symbol[2]))
         confirm_message = await ctx.channel.send(embed=confirm_embed)
         for i in range(1, 3):
             await confirm_message.add_reaction(num_to_symbol[i])
@@ -245,6 +247,13 @@ class Scrim(commands.Cog):
                     tier = tier_role['tier']
 
         return tier
+
+    def has_tier5_role(self, member, server_id):
+        tiers = self.db.get_tier_roles(server_id)
+        for member_role in member.roles:
+            if member_role.id == tiers[4]["id"]:
+                return True
+        return False
 
     @commands.group(name="scrim", alias="scrims", invoke_without_command=True, brief="Commands for scrim handling")
     @commands.has_guild_permissions(administrator=True)
@@ -497,7 +506,7 @@ class Scrim(commands.Cog):
         checkin_channel = ctx.guild.get_channel(scrim_channels['checkin'])
         checkout_channel = ctx.guild.get_channel(scrim_channels['checkout'])
 
-        #confirm reset
+        # confirm reset
         confirm = await self.confirm_embed(ctx, "reset scrim lobby")
 
         if not confirm:
@@ -630,7 +639,7 @@ class Scrim(commands.Cog):
         if len(ctx.message.mentions) != 0:
             member_tag = ctx.message.mentions[0]
 
-        if team_tag is None and member_tag is None:
+        if team_tag is None and member_tag is None and not self.has_tier5_role(ctx.message.author, ctx.guild.id):
             await Notification.send_alert(ctx=ctx, header="No team or member tagged",
                                           content="Use:\n{}checkin <@your team>\nor\n{}checkin <@yourself>"
                                                   "".format(self.client.prefix, self.client.prefix))
@@ -665,16 +674,22 @@ class Scrim(commands.Cog):
             mention = team_tag.mention
             description = "{} *checked in by* {}".format(team_tag.mention, ctx.message.author.mention)
         else:
-            if not member_tag == ctx.message.author and not admin:
+            if member_tag is not None and not member_tag == ctx.message.author and not admin:
                 await Notification.send_alert(ctx=ctx, header="Command denied",
                                               content="You have no permission to check in this MIX")
                 return
-
-            name = member_tag.name + " MIX"
-            role_id = member_tag.id
-            tier = 0
-            mention = member_tag.mention
-            description = "{}, MIX *checked in by* {}".format(member_tag.mention, ctx.message.author.mention)
+            if member_tag is None and self.has_tier5_role(ctx.message.author, ctx.guild.id):
+                name = ctx.message.content[9:]
+                tier = 5
+                role_id = ctx.message.author.id
+                mention = name
+                description = "{} *checked in by* {}".format(name, ctx.message.author.mention)
+            else:
+                name = member_tag.name + " MIX"
+                role_id = member_tag.id
+                tier = 0
+                mention = member_tag.mention
+                description = "{}, MIX *checked in by* {}".format(member_tag.mention, ctx.message.author.mention)
         scrim_id = self.db.get_scrim_id(server_id=ctx.guild.id, checkin_id=ctx.message.channel.id)
 
         if not self.db.add_team(role_id=role_id, name=name, tier=tier, mention=mention, scrim_id=scrim_id):
@@ -771,7 +786,7 @@ class Scrim(commands.Cog):
             team_tag = ctx.message.role_mentions[0]
         if len(ctx.message.mentions) != 0:
             member_tag = ctx.message.mentions[0]
-        if team_tag is None and member_tag is None:
+        if team_tag is None and member_tag is None and not self.has_tier5_role(ctx.message.author, ctx.guild.id):
             await Notification.send_alert(ctx=ctx, header="No team or member tagged",
                                           content="Use:\n{}checkout <@your team>\nor\n{}checkout <@yourself>".format(
                                               self.client.prefix))
@@ -794,12 +809,18 @@ class Scrim(commands.Cog):
             role_id = team_tag.id
             description = "{} *checked out by* {}".format(team_tag.mention, ctx.message.author.mention)
         else:
-            if not member_tag == ctx.message.author and not admin:
+            if member_tag is not None and not member_tag == ctx.message.author and not admin:
                 await Notification.send_alert(ctx=ctx, header="Command denied",
                                               content="You have no permission to check out this MIX")
                 return
-            role_id = member_tag.id
-            description = "{}, MIX *checked out by* {}".format(member_tag.mention, ctx.message.author.mention)
+
+            if member_tag is None and self.has_tier5_role(ctx.message.author, ctx.guild.id):
+                role_id = ctx.message.author.id
+                name = ctx.message.content[10:]
+                description = "{} *checked out by* {}".format(name, ctx.message.author)
+            else:
+                role_id = member_tag.id
+                description = "{}, MIX *checked out by* {}".format(member_tag.mention, ctx.message.author.mention)
 
         if not self.db.del_team(role_id=role_id, scrim_id=scrim_id):
             await Notification.send_alert(ctx=ctx, header="Team was not check in",
@@ -876,7 +897,6 @@ class Scrim(commands.Cog):
         add_team_embed.add_field(name="Member", value=member_mention, inline=False)
         await add_team_status_msg.edit(embed=add_team_embed)
 
-
         """ Tier """
         embed.clear_fields()
         embed.add_field(name="Tier", value="Tag a tier role")
@@ -915,7 +935,7 @@ class Scrim(commands.Cog):
 
         await Notification.send_approve(ctx, header="Action successful", content="Team created")
 
-    #@team.command(name="edit", brief="Edit a team")
+    # @team.command(name="edit", brief="Edit a team")
     @commands.has_guild_permissions(administrator=True)
     async def team_edit(self, ctx):
         channel = ctx.message.channel

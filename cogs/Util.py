@@ -68,7 +68,7 @@ class Util(commands.Cog):
             for channel in category.channels:
                 await channel.delete()
 
-    @utils.command(name="updateRoles")
+    #@utils.command(name="updateRoles")
     @commands.has_guild_permissions(administrator=True)
     async def update_roles(self, ctx):
         await ctx.message.delete()
