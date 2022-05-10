@@ -772,13 +772,13 @@ class Scrim(commands.Cog):
     async def checkout(self, ctx):
         await ctx.message.delete()
 
-        scrim_id = self.db.get_scrim_id(server_id=ctx.guild.id, checkout_id=ctx.message.channel.id)
-
         admin = self.client.db.is_admin(server_id=ctx.guild.id, member=ctx.message.author)
         if not self.db.is_checkout_channel(server_id=ctx.guild.id, channel_id=ctx.message.channel.id):
             await Notification.send_alert(ctx=ctx, header="No check out channel",
                                           content="You have to use a check out channel")
             return
+
+        scrim_id = self.db.get_scrim_id(server_id=ctx.guild.id, checkout_id=ctx.message.channel.id)
 
         team_tag = None
         member_tag = None
