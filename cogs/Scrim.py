@@ -686,6 +686,12 @@ class Scrim(commands.Cog):
                 return
             if member_tag is None and self.has_tier5_role(ctx.message.author, ctx.guild.id):
                 name = ctx.message.content[9:]
+
+                if len(name) < 2 :
+                    await Notification.send_alert(ctx=ctx, header="Command denied",
+                                                  content="Your teamname is to short. Must be at least 3 letters")
+                    return
+
                 tier = 5
                 role_id = ctx.message.author.id
                 mention = name
