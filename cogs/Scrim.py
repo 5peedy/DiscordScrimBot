@@ -228,7 +228,7 @@ class Scrim(commands.Cog):
         host_text = ""
         for i in range(1, len(hosts) + 1):
             host_text += "Lobby {} host: {}\n".format(str(i), hosts[i - 1])
-        text = "**FINAL LOBBY**\n{}Game up 18:50, Game start 19:00 CST\n@here".format(host_text)
+        text = "**FINAL LOBBY**\n{}Game up 18:50, Game start 19:00 CEST\n@here".format(host_text)
 
         await announce_channel.send(content=text)
 
@@ -566,7 +566,7 @@ class Scrim(commands.Cog):
             elif reaction.emoji == num_to_symbol[2]:
                 scrim_day = Dates_time.get_tomorrow()
 
-            lootspot_text = "**Lootspots for {}**\n\n-You have to write lootspots until 18:50\n-One main lootspot has to be posted for each map. No alt spots allowed\n\nPlease use this template if playing under a team:\nTeam&Tier:\nErangel:\nMiramar:\n\nPlease use this template if playing as a mix team:\n@Player1 MIX @Player2 @Player3 @Player4:\nErangel:\nMiramar:".format(
+            lootspot_text = "**Lootspots for {}**\n\n-You have to write lootspots until 18:50 CEST\n-One main lootspot has to be posted for each map. No alt spots allowed\n\nPlease use this template if playing under a team:\nTeam&Tier:\nErangel:\nMiramar:\n\nPlease use this template if playing as a mix team:\n@Player1 MIX @Player2 @Player3 @Player4:\nErangel:\nMiramar:".format(
                 scrim_day)
 
             lootspot_channels = []
