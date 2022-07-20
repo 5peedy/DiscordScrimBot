@@ -566,8 +566,13 @@ class Scrim(commands.Cog):
             elif reaction.emoji == num_to_symbol[2]:
                 scrim_day = Dates_time.get_tomorrow()
 
-            lootspot_text = "**Lootspots for {}**\n\n-You have to write lootspots until 18:50 CEST\n-One main lootspot has to be posted for each map. No alt spots allowed\n\nPlease use this template if playing under a team:\nTeam&Tier:\nErangel:\nMiramar:\n\nPlease use this template if playing as a mix team:\n@Player1 MIX @Player2 @Player3 @Player4:\nErangel:\nMiramar:".format(
-                scrim_day)
+            lootspot_text = "**Lootspots for {}**\n\n-You have to write lootspots until 18:50 CEST\n-One main " \
+                            "lootspot has to be posted for each map. No alt spots allowed\n\n\nRead 🌍│prio-system " \
+                            "for explanation.\nProtected locations and naming in 🌍│erangel-protection & " \
+                            "🌍│miramar-protection.\nYou can't contest a team with higher prio number.\n\nLootspot " \
+                            "template in ONE text line (no pictures)\n\nTeam with tier:\n@ Teamname, prio X, " \
+                            "E: lootspot main, M: lootspot main\n\nMIX:\n@ MIX1 @ MIX2  @ MIX3  @ MIX4, prio 0, " \
+                            "E: lootspot main, M: lootspot main".format(scrim_day)
 
             lootspot_channels = []
             for loot_channel_id in lootspot_channels_ids:
