@@ -566,7 +566,7 @@ class Scrim(commands.Cog):
             elif reaction.emoji == num_to_symbol[2]:
                 scrim_day = Dates_time.get_tomorrow()
 
-            lootspot_text = "**Lootspots for {}**\n\n-You have to write lootspots until 18:50 CEST\n\n\nRead 🌍│prio-system " \
+            lootspot_text = "**Lootspots for {}**\n\nRead 🌍│prio-system " \
                             "for explanation.\nProtected locations and naming in 🌍│erangel-protection & " \
                             "🌍│miramar-protection.\nYou can't contest a team with higher prio number.\n\nLootspot " \
                             "template in ONE text line (no pictures)\n\nTeam with tier:\n@ Teamname, prio X, " \
