@@ -691,7 +691,7 @@ class Scrim(commands.Cog):
                                                   content="Your teamname is to short. Must be at least 3 letters")
                     return
 
-                tier = 5
+                tier = 6
                 role_id = ctx.message.author.id
                 mention = name
                 description = "{} *checked in by* {}".format(name, ctx.message.author.mention)
