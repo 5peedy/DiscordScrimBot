@@ -566,12 +566,7 @@ class Scrim(commands.Cog):
             elif reaction.emoji == num_to_symbol[2]:
                 scrim_day = Dates_time.get_tomorrow()
 
-            lootspot_text = "**Lootspots for {}**\n\nRead 🌍│prio-system " \
-                            "for explanation.\nProtected locations and naming in 🌍│erangel-protection & " \
-                            "🌍│miramar-protection.\nYou can't contest a team with higher prio number.\n\nLootspot " \
-                            "template in ONE text line (no pictures)\n\nTeam with tier:\n@ Teamname, prio X, " \
-                            "E: lootspot main, M: lootspot main\n\nMIX:\n@ MIX1 @ MIX2  @ MIX3  @ MIX4, prio 0, " \
-                            "E: lootspot main, M: lootspot main".format(scrim_day)
+            lootspot_text = "**Lootspots for {}**\n\nRead <@&999327216104120481> for explanation.\nExamples in <@&999296690387423252> & <@&999298624246796348>.\nYou can't contest a team with higher prio number.\nYou cant post/update to a lootspot that is already taken after 18:30 CEST\n\nLootspot template in ONE text line (no pictures)\n\nTeam with tier:\n@ Teamname, prio X, E: lootspot main, M: lootspot main\n\nMIX:\n@ MIX1 @ MIX2  @ MIX3  @ MIX4, prio 0, E: lootspot main, M: lootspot main".format(scrim_day)
 
             lootspot_channels = []
             for loot_channel_id in lootspot_channels_ids:
@@ -717,7 +712,7 @@ class Scrim(commands.Cog):
 
         await self.update_lobby(scrim_id=scrim_id)
 
-    @commands.command(name="checkinT1", brief="Check in a T1 team or Mix")
+    @commands.command(name="checkinPro", brief="Check in a Pro team or Mix")
     @commands.has_guild_permissions(administrator=True)
     async def checkinT1(self, ctx):
         await ctx.message.delete()
