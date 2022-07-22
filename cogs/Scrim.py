@@ -251,7 +251,7 @@ class Scrim(commands.Cog):
     def has_tier5_role(self, member, server_id):
         tiers = self.db.get_tier_roles(server_id)
         for member_role in member.roles:
-            if member_role.id == tiers[4]["id"]:
+            if member_role.id == tiers[5]["id"]:
                 return True
         return False
 
