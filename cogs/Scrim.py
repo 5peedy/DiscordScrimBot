@@ -648,7 +648,7 @@ class Scrim(commands.Cog):
         if len(ctx.message.mentions) != 0:
             member_tag = ctx.message.mentions[0]
 
-        if team_tag is None and member_tag is None and not self.has_tier5_role(ctx.message.author, ctx.guild.id):
+        if team_tag is None and member_tag is None(ctx.message.author, ctx.guild.id):
             await Notification.send_alert(ctx=ctx, header="No team or member tagged",
                                           content="Use:\n{}checkin <@your team>\nor\n{}checkin <@yourself>"
                                                   "".format(self.client.prefix, self.client.prefix))
@@ -683,28 +683,16 @@ class Scrim(commands.Cog):
             mention = team_tag.mention
             description = "{} *checked in by* {}".format(team_tag.mention, ctx.message.author.mention)
         else:
-            if member_tag is not None and not member_tag == ctx.message.author and not admin:
+            if not member_tag == ctx.message.author and not admin:
                 await Notification.send_alert(ctx=ctx, header="Command denied",
                                               content="You have no permission to check in this MIX")
                 return
-            if member_tag is None and self.has_tier5_role(ctx.message.author, ctx.guild.id):
-                name = ctx.message.content[9:]
 
-                if len(name) < 3:
-                    await Notification.send_alert(ctx=ctx, header="Command denied",
-                                                  content="Your teamname is to short. Must be at least 3 letters")
-                    return
-
-                tier = 6
-                role_id = ctx.message.author.id
-                mention = name
-                description = "{} *checked in by* {}".format(name, ctx.message.author.mention)
-            else:
-                name = member_tag.name + " MIX"
-                role_id = member_tag.id
-                tier = 0
-                mention = member_tag.mention
-                description = "{}, MIX *checked in by* {}".format(member_tag.mention, ctx.message.author.mention)
+            name = member_tag.name + " MIX"
+            role_id = member_tag.id
+            tier = 0
+            mention = member_tag.mention
+            description = "{}, MIX *checked in by* {}".format(member_tag.mention, ctx.message.author.mention)
         scrim_id = self.db.get_scrim_id(server_id=ctx.guild.id, checkin_id=ctx.message.channel.id)
 
         if not self.db.add_team(role_id=role_id, name=name, tier=tier, mention=mention, scrim_id=scrim_id):
