@@ -487,22 +487,16 @@ class Scrim(commands.Cog):
             scrim_day = Dates_time.get_tomorrow()
 
         checkout_info = discord.Embed(title="Check out for {}".format(scrim_day), color=blue)
-        checkout_info.add_field(name="Checkout Team (Tier 1-4)",
+        checkout_info.add_field(name="Checkout Team",
                                 value="Use \"" + self.client.prefix + "checkout @<your team>\" to checkout your team",
-                                inline=False)
-        checkout_info.add_field(name="Checkout Team (Tier 5)",
-                                value="Use \"" + self.client.prefix + "checkout <your team>\" to checkout your team",
                                 inline=False)
         checkout_info.add_field(name="Checkout MIX",
                                 value="Use \"" + self.client.prefix + "checkout @<yourself>\" to checkout your MIX",
                                 inline=False)
 
         checkin_info = discord.Embed(title="Check in for {}".format(scrim_day), color=blue)
-        checkin_info.add_field(name="Checkin Team (Tier 1-4)",
+        checkin_info.add_field(name="Checkin Team",
                                value="Use \"" + self.client.prefix + "checkin @<your team>\" to checkin your team",
-                               inline=False)
-        checkin_info.add_field(name="Checkin Team (Tier 5)",
-                               value="Use \"" + self.client.prefix + "checkin <your team>\" to checkin your team",
                                inline=False)
         checkin_info.add_field(name="Checkin MIX",
                                value="Use \"" + self.client.prefix + "checkin @<yourself>\" to checkin your MIX",
