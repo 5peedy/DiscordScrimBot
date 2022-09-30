@@ -642,7 +642,7 @@ class Scrim(commands.Cog):
         if len(ctx.message.mentions) != 0:
             member_tag = ctx.message.mentions[0]
 
-        if team_tag is None and member_tag is None(ctx.message.author, ctx.guild.id):
+        if team_tag is None and member_tag is None:
             await Notification.send_alert(ctx=ctx, header="No team or member tagged",
                                           content="Use:\n{}checkin <@your team>\nor\n{}checkin <@yourself>"
                                                   "".format(self.client.prefix, self.client.prefix))
