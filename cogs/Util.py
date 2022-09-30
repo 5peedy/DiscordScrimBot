@@ -9,8 +9,7 @@ red = 0xD10000
 orange = 0xff8800
 blue = 0x007BFD
 
-mix_term = "Thanks for requesting the MIX role. Unfortunately you are not considered as trusted player yet. Therefore, we need the following info to verify your discord/steam account and pubg comp history:\n\n1. Tag the memebers you plan to play with regularly (use general chat and then copy it in here). We will check when the accounts have been created.\n2. Make sure that ALL discord names match the pubg names\n 3. Send us all steam profiles of the players\n 4. Send us links to pubg event pages (Starladder, GLL, ESL, ...), so we can verify the pubg comp history of multiple events\n\nKeep in mind:\n-You have the responsibility for your team. Meaning if you play with temp banned players or players with new steam/discord accounts, you will permanently lose your MIX access\n-Recieving repeatingly strikes may caue you losing the MIX access permanently"
-
+mix_term = "We require following information to verify your account:\n1. Link your steam profile (visibility of pubg game time)\n2. Link your pubg.op.gg account\n3. Twire.gg link of recent tournaments (recent 1 year) that you played (name of round/group/team)\n4. Your server discord name must match with your pubg IGN. Similar applies for all your teammates.\n\nWe will decline your request if:\n-Your discord account was recently created and/or shares no mutal competitive discord servers\n-Your steam account has a VAC ban (<1 year) and/or has very little pubg game time\n-Your pubg.op.gg link shows no ranked activity\n-You cant provide any recent tournament links"
 
 def is_role_team(role):
     if role.color.value == 1177361:
