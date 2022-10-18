@@ -110,7 +110,7 @@ class Scrim(commands.Cog):
         if reserve:
             if len(teams) != 0:
                 reserve_status_embed = discord.Embed(title="{} - {}".format(scrim_name, scrim_date), color=0x000000)
-                text = ""
+                text = "**"
                 for seat in range(1, len(teams) + 1):
                     team = teams.pop(0)
                     if team['tier'] == 0:
@@ -118,6 +118,7 @@ class Scrim(commands.Cog):
                     else:
                         tier_text = tiers[team['tier'] - 1]['mention']
                     text += "Seat {}: {}, {}\n".format(seat, team['mention'], tier_text)
+                text += "**"
                 reserve_status_embed.add_field(name="Reserve", value=text)
                 lobbies.append(reserve_status_embed)
 
