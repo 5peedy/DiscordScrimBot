@@ -103,7 +103,7 @@ class Scrim(commands.Cog):
                     tier_text = "MIX"
                 else:
                     tier_text = tiers[team['tier'] - 1]['mention']
-                text += "**Slot {}:** {}, {}\n".format(slot, team['mention'], tier_text)
+                text += "Slot {}: {}, {}\n".format(slot, team['mention'], tier_text)
             lobby_status_embed.add_field(name="Lobby {}".format(lobby), value=text)
             lobbies.append(lobby_status_embed)
 
@@ -117,7 +117,7 @@ class Scrim(commands.Cog):
                         tier_text = "MIX"
                     else:
                         tier_text = tiers[team['tier'] - 1]['mention']
-                    text += "**Seat {}:** {}, {}\n".format(seat, team['mention'], tier_text)
+                    text += "Seat {}: {}, {}\n".format(seat, team['mention'], tier_text)
                 reserve_status_embed.add_field(name="Reserve", value=text)
                 lobbies.append(reserve_status_embed)
 
