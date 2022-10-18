@@ -93,7 +93,7 @@ class Scrim(commands.Cog):
 
         for lobby in range(1, lobby_count + 1):
             lobby_status_embed = discord.Embed(title="{} - {}".format(scrim_name, scrim_date), color=green)
-            text = ""
+            text = "**"
             addition = 0
             if lobby <= unbalanced_team_addition:
                 addition = 1
@@ -104,6 +104,7 @@ class Scrim(commands.Cog):
                 else:
                     tier_text = tiers[team['tier'] - 1]['mention']
                 text += "Slot {}: {}, {}\n".format(slot, team['mention'], tier_text)
+            text += "**"
             lobby_status_embed.add_field(name="Lobby {}".format(lobby), value=text)
             lobbies.append(lobby_status_embed)
 
