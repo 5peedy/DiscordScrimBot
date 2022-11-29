@@ -562,11 +562,7 @@ class Scrim(commands.Cog):
             elif reaction.emoji == num_to_symbol[2]:
                 scrim_day = Dates_time.get_tomorrow()
 
-            prio_channel = ctx.guild.get_channel(999327216104120481).mention
-            erangel_channel = ctx.guild.get_channel(999296690387423252).mention
-            miramar_channel = ctx.guild.get_channel(999298624246796348).mention
-
-            lootspot_text = "**Lootspots for {}**\n\nRead ".format(scrim_day) + prio_channel +" for explanation.\nExamples in " + erangel_channel + " & " + miramar_channel + ".\nYou can't contest a team with higher prio number.\nYou cant post/update to a lootspot that is already taken after 18:30 CEST\n\nLootspot template in ONE text line (no pictures)\n\nTeam with tier:\n@ Teamname, prio X, E: lootspot main, M: lootspot main\n\nMIX:\n@ MIX1 @ MIX2  @ MIX3  @ MIX4, prio 0, E: lootspot main, M: lootspot main"
+            lootspot_text = "**Lootspots for {}**\n\nRead ".format(scrim_day)+"Lootspot template in ONE text line (no pictures)\n\nTeam with tier:\n@ Teamname Tier E: lootspot main, M: lootspot main\n\nMIX:\n@ Player1 MIX @ Player2 @ Player3 @ Player4 E: lootspot main, M: lootspot main"
 
             lootspot_channels = []
             for loot_channel_id in lootspot_channels_ids:
