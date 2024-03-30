@@ -100,14 +100,15 @@ class ScrimDB:
 
     def get_scrims(self, server_id):
         self.update()
-        query = "SELECT scrim_name, id FROM scrims WHERE server_id = {}".format(server_id)
+        query = "SELECT scrim_name, id, time FROM scrims WHERE server_id = {}".format(server_id)
         self.cursor.execute(query)
         fetched = self.cursor.fetchall()
         result = []
         for entry in fetched:
             result.append({
                 "name": entry[0],
-                "id": entry[1]
+                "id": entry[1],
+                "time": entry[2]
             })
         return result
 
