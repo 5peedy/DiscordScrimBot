@@ -607,7 +607,8 @@ class Scrim(commands.Cog):
             for user in host_response.mentions:
                 hosts.append(user.mention)
 
-        await self.announce_lobby(scrim_id=scrim_id, hosts=hosts, guild=ctx.guild, lobbies=lobbies)
+        await self.announce_lobby(scrim_id=scrim_id, hosts=hosts, guild=ctx.guild, lobbies=lobbies,
+                                  time=selected_scrim["time"])
 
     @scrim.command(name="update", brief="For dev only")
     @commands.has_guild_permissions(administrator=True)
