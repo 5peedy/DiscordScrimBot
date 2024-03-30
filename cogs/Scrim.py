@@ -220,7 +220,7 @@ class Scrim(commands.Cog):
             for lobby_embed in lobbies:
                 await status_channel.send(embed=lobby_embed)
 
-    async def announce_lobby(self, scrim_id, guild, hosts, lobbies):
+    async def announce_lobby(self, scrim_id, guild, hosts, lobbies, time):
         announce_channel = guild.get_channel(self.db.get_scrim_channels(scrim_id=scrim_id)['announce'])
 
         if len(lobbies) == 0:
@@ -230,7 +230,7 @@ class Scrim(commands.Cog):
         host_text = ""
         for i in range(1, len(hosts) + 1):
             host_text += "Lobby {} host: {}\n".format(str(i), hosts[i - 1])
-        text = "**FINAL LOBBY**\n{}Game up 18:50, Game start 19:00 CEST\n@here".format(host_text)
+        text = "**FINAL LOBBY**\n{}Game starting at {}, Game up 10 min before start\n@here".format(host_text, time)
 
         await announce_channel.send(content=text)
 
