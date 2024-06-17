@@ -9,7 +9,7 @@ red = 0xD10000
 orange = 0xff8800
 blue = 0x007BFD
 
-mix_term = "We require following information to verify your account:\n1. Link your steam profile (visibility of pubg game time)\n2. Link your pubg.op.gg profile\n3. Twire.gg link of recent tournaments (recent 1 year) that you played (name of round/group/team)\n4. Your server discord name must match with your pubg IGN\n\nWe will decline your request if:\n-Your discord account was recently created and/or shares no mutal competitive discord servers\n-Your steam account has a VAC ban (<1 year) and/or has very little pubg game time\n-Your pubg.op.gg link shows no ranked activity\n-You cant provide any recent tournament links"
+mix_term = "**We require following information to verify your account:**\n1. Link your steam profile (visibility of pubg game time)\n2. Link your pubg.op.gg profile\n3. Your server discord name must match with your pubg IGN\n\nWe will decline your request if:\n- Your discord account was recently created\n- Your steam account has a VAC ban (<1 year)\n- You have less than 1500 hours of game time\n- Your pubg.op.gg link shows no recent ranked activity"
 def is_role_team(role):
     if role.color.value == 1177361:
         return True
