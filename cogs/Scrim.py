@@ -561,8 +561,7 @@ class Scrim(commands.Cog):
             elif reaction.emoji == num_to_symbol[2]:
                 scrim_day = Dates_time.get_tomorrow()
 
-            lootspot_text = "**Lootspots for {}**".format(
-                scrim_day) + "Please use the following template (no pictures):\n\nTeam with tier:\n@ Teamname Tier \nE: main lootspot\nM: main lootspot\nT: main lootspot\nR: main lootspot\n\nMIX:\n@ Player1 MIX @ Player2 @ Player3 @ Player4 \nE: main lootspot\nM: main lootspot\nT: main lootspot\nR: main lootspot"
+            lootspot_text = "**Lootspots for {}**".format(scrim_day)+"\nPlease use the following template (no pictures):\n\nTeam with tier:\n@ Teamname Tier \nE: main lootspot\nM: main lootspot\nT: main lootspot\nR: main lootspot\n\nMIX:\n@ Player1 MIX @ Player2 @ Player3 @ Player4 \nE: main lootspot\nM: main lootspot\nT: main lootspot\nR: main lootspot"
 
             lootspot_channels = []
             for loot_channel_id in lootspot_channels_ids:
