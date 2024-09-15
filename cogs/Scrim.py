@@ -46,7 +46,6 @@ def is_team_member(team, member):
     return False
 
 
-
 class Scrim(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -258,12 +257,12 @@ class Scrim(commands.Cog):
         return False
 
     @commands.group(name="scrim", alias="scrims", invoke_without_command=True, brief="Commands for scrim handling")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def scrim(self, ctx):
         pass
 
     @scrim.command(name="init", alias="setup", brief="Create new scrims")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def init_scrim(self, ctx):
         await ctx.message.delete()
 
@@ -311,7 +310,7 @@ class Scrim(commands.Cog):
         def select_mode_check(reaction, user):
             reac_str = str(reaction.emoji)
             return user == ctx.message.author and reaction.message.id == mode_msg.id and \
-                   (reac_str == "1️⃣" or reac_str == "2️⃣")
+                (reac_str == "1️⃣" or reac_str == "2️⃣")
 
         try:
             reaction, user = await self.client.wait_for('reaction_add', check=select_mode_check, timeout=60.0)
@@ -414,7 +413,7 @@ class Scrim(commands.Cog):
         print("Scrims \"{}\" has been created successfully".format(name))
 
     @scrim.command(name="open", brief="Open scrim", description="Open a scrim\n\nSteps:\n1. Select scrims")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def open_scrim(self, ctx):
         await ctx.message.delete()
         selected_scrim = await self.select_scrim(server_id=ctx.guild.id, ctx=ctx)
@@ -428,7 +427,7 @@ class Scrim(commands.Cog):
         checkout_channel = ctx.guild.get_channel(scrim_channel_ids['checkout'])
 
     @scrim.command(name="close", brief="Close scrim", description="Close a scrim\n\nSteps:\n1. Select scrims")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def close_scrim(self, ctx):
         await ctx.message.delete()
         selected_scrim = await self.select_scrim(server_id=ctx.guild.id, ctx=ctx)
@@ -447,7 +446,7 @@ class Scrim(commands.Cog):
     @scrim.command(name="reset", brief="Reset teams and open next scrim sessions", description="Reset teams and open "
                                                                                                "next scrim sessions\n\nSteps:\n1. Select scrims"
                                                                                                "\n2. Select day")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def reset_scrim(self, ctx):
         await ctx.message.delete()
         server_id = ctx.guild.id
@@ -525,7 +524,7 @@ class Scrim(commands.Cog):
         await Notification.send_approve(ctx=ctx, header="Scim reset", content="{} has been reset".format(scrim_name))
 
     @scrim.command(name="clear", brief="Use \"!scrim clear lootspot\" for now")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def clear(self, ctx, target):
         await ctx.message.delete()
 
@@ -562,7 +561,8 @@ class Scrim(commands.Cog):
             elif reaction.emoji == num_to_symbol[2]:
                 scrim_day = Dates_time.get_tomorrow()
 
-            lootspot_text = "**Lootspots for {}**".format(scrim_day)+"Please use the following template (no pictures):\n\nTeam with tier:\n@ Teamname Tier \nE: main lootspot\nM: main lootspot\nT: main lootspot\nR: main lootspot\n\nMIX:\n@ Player1 MIX @ Player2 @ Player3 @ Player4 \nE: main lootspot\nM: main lootspot\nT: main lootspot\nR: main lootspot"
+            lootspot_text = "**Lootspots for {}**".format(
+                scrim_day) + "Please use the following template (no pictures):\n\nTeam with tier:\n@ Teamname Tier \nE: main lootspot\nM: main lootspot\nT: main lootspot\nR: main lootspot\n\nMIX:\n@ Player1 MIX @ Player2 @ Player3 @ Player4 \nE: main lootspot\nM: main lootspot\nT: main lootspot\nR: main lootspot"
 
             lootspot_channels = []
             for loot_channel_id in lootspot_channels_ids:
@@ -575,7 +575,7 @@ class Scrim(commands.Cog):
     @scrim.command(name="announce", brief="Announce scrim lobbies", description="Announce scrim lobbies\n\nSteps:\n"
                                                                                 "1. Select scrims\n"
                                                                                 "2. Tag scrim hosts")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def announce_scrim(self, ctx):
         await ctx.message.delete()
 
@@ -611,7 +611,7 @@ class Scrim(commands.Cog):
                                   time=selected_scrim["time"])
 
     @scrim.command(name="update", brief="For dev only")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def update_scrim(self, ctx):
         await ctx.message.delete()
 
@@ -697,73 +697,6 @@ class Scrim(commands.Cog):
 
         await self.update_lobby(scrim_id=scrim_id)
 
-    @commands.command(name="checkinPro", brief="Check in a Pro team or Mix")
-    @commands.has_guild_permissions(administrator=True)
-    async def checkinT1(self, ctx):
-        await ctx.message.delete()
-        admin = self.client.db.is_admin(server_id=ctx.guild.id, member=ctx.message.author)
-
-        if not self.db.is_checkin_channel(server_id=ctx.guild.id, channel_id=ctx.message.channel.id):
-            await Notification.send_alert(ctx=ctx, header="No check in channel",
-                                          content="You have to use a check in channel")
-            return
-
-        team_tag = None
-        member_tag = None
-
-        if len(ctx.message.role_mentions) != 0:
-            team_tag = ctx.message.role_mentions[0]
-        if len(ctx.message.mentions) != 0:
-            member_tag = ctx.message.mentions[0]
-
-        if team_tag is None and member_tag is None:
-            await Notification.send_alert(ctx=ctx, header="No team or member tagged",
-                                          content="Use:\n{}checkin <@your team>\nor\n{}checkin <@yourself>"
-                                                  "".format(self.client.prefix, self.client.prefix))
-            return
-
-        if not self.db.is_scrims_open(server_id=ctx.guild.id, checkin=ctx.message.channel.id) and not admin:
-            await Notification.send_alert(ctx=ctx, header="Scrims are not open",
-                                          content="You can not check in right now")
-            return
-
-        if team_tag is not None:
-            if not is_role_team(role=team_tag):
-                await Notification.send_alert(ctx=ctx, header="Role is no team", content="You have to tag a team role")
-                return
-
-            if not is_team_member(team=team_tag, member=ctx.message.author) and not admin:
-                await Notification.send_alert(ctx=ctx, header="Command denied",
-                                              content="You have no permission to check in this team")
-                return
-
-            role_id = team_tag.id
-            name = team_tag.name
-            tier = 1
-            mention = team_tag.mention
-            description = "{} *checked in by* {}".format(team_tag.mention, ctx.message.author.mention)
-        else:
-            if not member_tag == ctx.message.author and not admin:
-                await Notification.send_alert(ctx=ctx, header="Command denied",
-                                              content="You have no permission to check in this MIX")
-                return
-
-            name = member_tag.name + " MIX"
-            role_id = member_tag.id
-            tier = 1
-            mention = member_tag.mention
-            description = "{}, MIX *checked in by* {}".format(member_tag.mention, ctx.message.author.mention)
-        scrim_id = self.db.get_scrim_id(server_id=ctx.guild.id, checkin_id=ctx.message.channel.id)
-
-        if not self.db.add_team(role_id=role_id, name=name, tier=tier, mention=mention, scrim_id=scrim_id):
-            await Notification.send_alert(ctx=ctx, header="Team is already checked in",
-                                          content="You cant check in twice")
-            return
-
-        await Notification.send_approve(ctx=ctx, title="Check in", description=description, permanent=True)
-
-        await self.update_lobby(scrim_id=scrim_id)
-
     @commands.command(name="checkout", brief="Check out a team or Mix")
     async def checkout(self, ctx):
         await ctx.message.delete()
@@ -827,12 +760,12 @@ class Scrim(commands.Cog):
         await self.update_lobby(scrim_id=scrim_id)
 
     @commands.group(name="team", brief="Commands for team management")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def team(self, ctx):
         pass
 
     @team.command(name="add", brief="Add a team")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def team_add(self, ctx):
         await ctx.message.delete()
         channel = ctx.message.channel
@@ -932,7 +865,7 @@ class Scrim(commands.Cog):
         await Notification.send_approve(ctx, header="Action successful", content="Team created")
 
     # @team.command(name="edit", brief="Edit a team")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def team_edit(self, ctx):
         channel = ctx.message.channel
         guild = ctx.guild
@@ -989,7 +922,7 @@ class Scrim(commands.Cog):
             pass  # ToDo make functions for selected category
 
     @team.command(name="list", brief="list all teams sorted by tier")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def team_list(self, ctx):
         await ctx.message.delete()
 
@@ -1049,12 +982,12 @@ class Scrim(commands.Cog):
         embed.clear_fields()
 
     # @commands.group(name="player", brief="Commands for player tame management")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def player(self, ctx):
         pass
 
     # @player.command(name="add", brief="Add a player to an existing team", invoke_without_command=True)
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def player_add(self, ctx):
         pass
 

@@ -10,17 +10,17 @@ class Settings(commands.Cog):
         self.db = self.client.db
 
     @commands.group(name="settings", invoke_without_command=True)
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def setting_command(self, ctx):
         pass
 
     @setting_command.group(name="admin", invoke_without_command=True)
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def setting_admin(self, ctx):
         pass
 
     @setting_admin.command(name="add")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     @commands.check(Checks.role_mentioned)
     async def setting_add_admin(self, ctx):
         print("Adding admin role to server:" + ctx.guild.name)
@@ -38,7 +38,7 @@ class Settings(commands.Cog):
 
     @setting_admin.command(name="remove")
     @commands.check(Checks.role_mentioned)
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def setting_remove_admin(self, ctx):
         print("Removing admin role from server:" + ctx.guild.name)
 
