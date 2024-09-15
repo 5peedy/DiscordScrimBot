@@ -17,7 +17,7 @@ config = JsonCon.load_config("config.json")
 BOT_PREFIX = "!"
 TOKEN = config['token']
 
-extensions = ["cogs.Settings", "cogs.Scrim", "cogs.Pinger", "cogs.Util"]
+extensions = ["cogs.Settings", "cogs.Scrim", "cogs.Util"]
 
 intents = Intents.default()
 intents.members = True

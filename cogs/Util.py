@@ -9,7 +9,6 @@ red = 0xD10000
 orange = 0xff8800
 blue = 0x007BFD
 
-mix_term = "**We require following information to verify your account:**\n1. Link your steam profile (visibility of pubg game time)\n2. Link your pubg.op.gg profile\n3. Your server discord name must match with your pubg IGN\n\nWe will decline your request if:\n- Your discord account was recently created\n- Your steam account has a VAC ban (<1 year)\n- You have less than 1500 hours of game time\n- Your pubg.op.gg link shows no recent ranked activity"
 def is_role_team(role):
     if role.color.value == 1177361:
         return True
@@ -21,24 +20,17 @@ class Util(commands.Cog):
         self.client = client
 
     @commands.group(name="clear", invoke_without_command=True)
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def clear(self, ctx):
         pass
 
     @commands.group(name="utils", alias="util", brief="Useful scripts", invoke_without_command=True)
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def utils(self, ctx):
         pass
 
-    @commands.command(name="mixterms")
-    @commands.has_guild_permissions(administrator=True)
-    async def mix_terms(self, ctx):
-        channel = ctx.message.channel
-
-        await channel.send(mix_term)
-
     @clear.command(name="category", brief="Delets all channels inside a category")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def clear_category(self, ctx):
         await ctx.message.delete()
 
@@ -69,7 +61,7 @@ class Util(commands.Cog):
                 await channel.delete()
 
     @utils.command(name="updateRoles")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def update_roles(self, ctx):
         await ctx.message.delete()
 
@@ -141,12 +133,12 @@ class Util(commands.Cog):
         result_message = await ctx.channel.send(embed=result_embed, delete_after=300)
 
     @utils.group(name="sort", invoke_without_command=True, brief="Sorting scripts")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def sort(self):
         pass
 
     @sort.command(name="teams")
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(740572327846346873, 983341516460290058)
     async def sort_teams(self, ctx):
         guild = ctx.guild
 
