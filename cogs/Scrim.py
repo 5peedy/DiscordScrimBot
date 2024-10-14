@@ -948,7 +948,7 @@ class Scrim(commands.Cog):
                 await channel.send("**Tier {}[{}]:**".format(tier['mention'], len(temp_teams)), embed=embed)
                 embed.clear_fields()
 
-            embed_items = 20
+            embed_items = 19
             embed_count = int(len(temp_teams) / embed_items)
             if (len(temp_teams) - embed_items * embed_count) % embed_items != 0:
                 embed_count += 1
