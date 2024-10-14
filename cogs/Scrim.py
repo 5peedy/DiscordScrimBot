@@ -959,8 +959,8 @@ class Scrim(commands.Cog):
 
                     description = ""
 
-                    iterate_limit = 20
-                    if len(temp_teams) < 20:
+                    iterate_limit = embed_items
+                    if len(temp_teams) < embed_items:
                         iterate_limit = len(temp_teams)
 
                     for i in range(iterate_limit):
