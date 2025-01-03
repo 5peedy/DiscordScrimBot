@@ -990,6 +990,12 @@ class Scrim(commands.Cog):
     async def player_add(self, ctx):
         pass
 
+    #workaround for db disconnection when idle
+    @discord.ext.tasks.loop(hours=3)
+    async def update_scrims(self):
+        for scrim in self.db.get_scrims(580599197527572488):
+            await self.update_lobby(scrim_id=scrim['id'])
+
 
 def setup(client):
     client.add_cog(Scrim(client))
