@@ -229,7 +229,8 @@ class Scrim(commands.Cog):
             host_text = ""
             for i in range(1, len(hosts) + 1):
                 host_text += "Lobby {} host: {}\n".format(str(i), hosts[i - 1])
-            text = "**FINAL LOBBY**\n{}Game starting at {}, Game up 10 min before start\n@here".format(host_text, time)
+            # text = "**FINAL LOBBY**\n{}Game starting at {}, Game up 10 min before start\n@here".format(host_text, time)
+            text = "**FINAL LOBBY**\n{}\n@here".format(host_text)
 
             await announce_channel.send(content=text)
 
